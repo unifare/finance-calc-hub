@@ -1,0 +1,545 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FinCalc Pro — 金融计算器工具箱</title>
+<style>
+/* ===== 设计令牌 — 深板岩 · 琥珀金 ===== */
+:root {
+  --bg-primary: #111215;
+  --bg-secondary: #181a1f;
+  --bg-tertiary: #1e2127;
+  --bg-card: #1c1e24;
+  --bg-card-hover: #242731;
+  --border-subtle: #2e3139;
+  --border-strong: #40444f;
+  --border-accent: #f59e0b;
+  --text-primary: #edede8;
+  --text-secondary: #a8a69e;
+  --text-muted: #6b6a64;
+  --accent-start: #d97706;
+  --accent-end: #f59e0b;
+  --accent-glow: rgba(245,158,11,0.12);
+  --accent-glow-heavy: rgba(245,158,11,0.20);
+  --category-loan: #f59e0b;
+  --category-interest: #34d399;
+  --category-invest: #60a5fa;
+  --category-tax: #f87171;
+  --nav-bg: rgba(17,18,21,0.88);
+  --nav-border: #2e3139;
+  --hero-gradient: linear-gradient(165deg, #111215 0%, #1a1c23 30%, #111215 70%);
+  --callout-bg: #1c1e24;
+  --font-sans: 'Inter', 'PingFang SC', 'Noto Sans SC', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+  --max-width: 1280px;
+  --header-height: 68px;
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-full: 9999px;
+}
+
+/* ===== 浅色主题 ===== */
+.light {
+  --bg-primary: #f5f4f0;
+  --bg-secondary: #ebeae5;
+  --bg-tertiary: #e2e0db;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f8f7f3;
+  --border-subtle: #d6d4ce;
+  --border-strong: #b8b5ae;
+  --border-accent: #d97706;
+  --text-primary: #1c1b18;
+  --text-secondary: #5e5c56;
+  --text-muted: #9a9790;
+  --accent-start: #b45309;
+  --accent-end: #d97706;
+  --accent-glow: rgba(217,119,6,0.10);
+  --accent-glow-heavy: rgba(217,119,6,0.18);
+  --nav-bg: rgba(245,244,240,0.88);
+  --nav-border: #d6d4ce;
+  --hero-gradient: linear-gradient(165deg, #f5f4f0 0%, #ede7dd 40%, #f5f4f0 80%);
+  --callout-bg: #ffffff;
+}
+
+/* ===== 全局重置 ===== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font-sans);
+  background:var(--bg-primary);
+  color:var(--text-primary);
+  line-height:1.7;
+  transition:background 0.25s,color 0.25s;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+a{color:inherit;text-decoration:none}
+ul{list-style:none}
+img{max-width:100%}
+
+/* ===== Focus 可见性 ===== */
+:focus-visible{
+  outline:2px solid var(--accent-start);
+  outline-offset:3px;
+  border-radius:8px;
+}
+
+/* ===== 卡片 ===== */
+.card{
+  background:var(--bg-card);
+  border:1px solid var(--border-subtle);
+  border-radius:var(--radius-md);
+  box-shadow:0 1px 3px rgba(0,0,0,0.08);
+  transition:transform 0.25s cubic-bezier(0.34,1.56,0.64,1),background 0.2s,box-shadow 0.25s,border-color 0.2s;
+}
+.card:hover{
+  transform:translateY(-4px);
+  background:var(--bg-card-hover);
+  box-shadow:0 8px 24px rgba(0,0,0,0.20);
+  border-color:var(--border-strong);
+}
+.card:focus-visible{
+  outline:2px solid var(--accent-start);
+  outline-offset:2px;
+}
+
+/* ===== 容器 ===== */
+.container{max-width:var(--max-width);margin:0 auto;padding:0 24px}
+
+/* ===== 导航 ===== */
+header{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  height:var(--header-height);
+  background:var(--nav-bg);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--nav-border);
+  display:flex;align-items:center;
+}
+.header-inner{
+  display:flex;align-items:center;justify-content:space-between;
+  width:100%;max-width:var(--max-width);margin:0 auto;padding:0 24px;
+}
+.logo{
+  font-size:1.3rem;font-weight:700;color:var(--text-primary);
+  letter-spacing:-0.02em;
+}
+.logo span{
+  color:var(--accent-end);
+}
+.nav-links{display:flex;gap:28px;align-items:center}
+.nav-links a{
+  font-size:0.9rem;font-weight:500;
+  color:var(--text-secondary);
+  transition:color 0.2s;
+  padding:6px 0;
+  position:relative;
+}
+.nav-links a::after{
+  content:'';position:absolute;bottom:0;left:0;width:0;height:2px;
+  background:var(--accent-end);
+  transition:width 0.3s;border-radius:2px;
+}
+.nav-links a:hover{color:var(--text-primary)}
+.nav-links a:hover::after{width:100%}
+.theme-toggle{
+  background:var(--bg-card);
+  border:1px solid var(--border-subtle);
+  border-radius:var(--radius-full);
+  width:44px;height:44px;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:1.2rem;
+  color:var(--text-primary);
+  transition:background 0.2s,transform 0.2s,border-color 0.2s;
+  flex-shrink:0;
+}
+.theme-toggle:hover{background:var(--bg-card-hover);transform:scale(1.08);border-color:var(--border-strong)}
+
+/* ===== Hero ===== */
+.hero{
+  padding:140px 0 76px;
+  background:var(--hero-gradient);
+  text-align:center;position:relative;
+  overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;top:-40%;left:-10%;width:60%;height:100%;
+  background:radial-gradient(circle at 20% 50%,var(--accent-glow-heavy) 0%,transparent 60%);
+  pointer-events:none;
+}
+.hero::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--accent-end),transparent);
+  opacity:0.12;
+}
+.hero-content{position:relative;z-index:1;max-width:800px;margin:0 auto}
+.hero-badge{
+  display:inline-block;padding:6px 20px;border-radius:var(--radius-full);
+  background:var(--callout-bg);
+  border:1px solid var(--border-subtle);
+  font-size:0.85rem;font-weight:500;margin-bottom:24px;
+  color:var(--text-secondary);letter-spacing:0.03em;
+}
+.hero h1{
+  font-size:clamp(2.2rem,5.5vw,4rem);font-weight:800;line-height:1.1;
+  letter-spacing:-0.03em;margin-bottom:20px;
+  color:var(--text-primary);
+}
+.hero h1 .accent{
+  color:var(--accent-end);
+}
+.hero p{
+  font-size:clamp(1rem,1.8vw,1.2rem);
+  color:var(--text-secondary);
+  max-width:560px;margin:0 auto 44px;line-height:1.8;
+}
+.hero-cta{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:14px 36px;
+  border-radius:var(--radius-full);
+  background:linear-gradient(135deg,var(--accent-start),var(--accent-end));
+  color:#fff;
+  font-weight:600;font-size:1rem;
+  border:none;cursor:pointer;
+  transition:transform 0.25s,box-shadow 0.25s;
+  box-shadow:0 6px 20px rgba(217,119,6,0.30);
+  margin-bottom:44px;
+}
+.hero-cta:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 10px 32px rgba(217,119,6,0.40)}
+.hero-cta:active{transform:scale(0.98)}
+.hero-stats{
+  display:flex;justify-content:center;gap:48px;flex-wrap:wrap;
+}
+.stat-item{text-align:center}
+.stat-value{
+  font-size:clamp(1.8rem,3vw,2.4rem);font-weight:800;
+  color:var(--accent-end);
+  line-height:1.2;
+  letter-spacing:-0.02em;
+}
+.stat-label{
+  font-size:0.9rem;color:var(--text-muted);margin-top:4px;
+  letter-spacing:0.02em;
+}
+
+/* ===== 分类与网格 ===== */
+.section{padding:80px 0}
+.section-header{text-align:center;margin-bottom:48px}
+.section-header h2{font-size:clamp(1.6rem,3vw,2.2rem);font-weight:700;margin-bottom:12px;letter-spacing:-0.01em}
+.section-header p{color:var(--text-secondary);max-width:500px;margin:0 auto;font-size:1rem}
+.category-tabs{
+  display:flex;justify-content:center;gap:10px;margin-bottom:48px;flex-wrap:wrap;
+}
+.category-tab{
+  padding:9px 24px;border-radius:var(--radius-full);
+  background:var(--bg-card);border:1px solid var(--border-subtle);
+  font-size:0.9rem;font-weight:500;color:var(--text-secondary);
+  cursor:pointer;transition:all 0.25s cubic-bezier(0.34,1.56,0.64,1);
+  user-select:none;white-space:nowrap;
+}
+.category-tab:hover{
+  background:var(--bg-card-hover);
+  border-color:var(--border-strong);
+  color:var(--text-primary);
+}
+.category-tab.active{
+  background:linear-gradient(135deg,var(--accent-start),var(--accent-end));
+  color:#fff;border-color:transparent;
+  box-shadow:0 4px 14px rgba(217,119,6,0.25);
+}
+.calculator-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(290px,1fr));
+  gap:20px;
+}
+.calc-card{
+  padding:24px 24px 52px 24px;
+  position:relative;display:flex;flex-direction:column;
+  cursor:pointer;
+}
+.calc-card .icon-wrap{
+  width:48px;height:48px;border-radius:var(--radius-sm);
+  background:var(--bg-tertiary);
+  border:1px solid var(--border-subtle);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:16px;font-size:1.6rem;
+}
+.calc-card h3{
+  font-size:1.1rem;font-weight:600;margin-bottom:6px;
+  letter-spacing:-0.01em;
+}
+.calc-card p{
+  font-size:0.88rem;color:var(--text-secondary);
+  flex:1;line-height:1.6;
+}
+.calc-tags{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.calc-tag{
+  padding:4px 12px;border-radius:var(--radius-full);
+  font-size:0.75rem;font-weight:500;
+  background:var(--bg-tertiary);
+  color:var(--text-muted);
+}
+.calc-tag.loan{color:var(--category-loan)}
+.calc-tag.interest{color:var(--category-interest)}
+.calc-tag.invest{color:var(--category-invest)}
+.calc-tag.tax{color:var(--category-tax)}
+.calc-arrow{
+  position:absolute;bottom:18px;right:18px;
+  width:34px;height:34px;border-radius:50%;
+  background:var(--bg-tertiary);display:flex;align-items:center;justify-content:center;
+  transition:transform 0.25s,background 0.25s;font-size:0.95rem;
+  border:1px solid var(--border-subtle);
+  color:var(--text-muted);
+}
+.calc-card:hover .calc-arrow{
+  transform:translateX(5px);
+  background:var(--callout-bg);
+  border-color:var(--accent-end);
+  color:var(--accent-end);
+}
+.calc-card:focus-visible .calc-arrow{
+  transform:translateX(4px);
+}
+
+/* ===== 空状态 ===== */
+.empty-state{
+  grid-column:1/-1;
+  text-align:center;
+  padding:60px 20px;
+  color:var(--text-muted);
+}
+.empty-state .empty-icon{font-size:3rem;margin-bottom:16px}
+.empty-state p{font-size:1rem}
+
+/* ===== 特性展示 ===== */
+.features{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:24px;
+  margin-top:32px;
+}
+.feature-card{
+  padding:36px 28px;text-align:center;
+}
+.feature-icon{
+  width:60px;height:60px;margin:0 auto 20px;
+  border-radius:var(--radius-md);
+  background:linear-gradient(135deg,var(--accent-start),var(--accent-end));
+  display:flex;align-items:center;justify-content:center;font-size:2rem;
+  box-shadow:0 6px 20px rgba(217,119,6,0.20);
+}
+.feature-card h4{font-size:1.1rem;font-weight:600;margin-bottom:10px}
+.feature-card p{font-size:0.9rem;color:var(--text-secondary);line-height:1.65}
+
+/* ===== 页脚 ===== */
+footer{
+  border-top:1px solid var(--border-subtle);
+  padding:40px 0;
+  text-align:center;
+  color:var(--text-muted);
+  font-size:0.85rem;
+}
+footer a{
+  color:var(--text-secondary);
+  transition:color 0.2s;
+}
+footer a:hover{color:var(--accent-start)}
+
+/* ===== 进入动画 ===== */
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(16px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.calc-card{
+  animation:fadeUp 0.4s ease-out backwards;
+}
+.calc-card:nth-child(1){animation-delay:0.02s}
+.calc-card:nth-child(2){animation-delay:0.06s}
+.calc-card:nth-child(3){animation-delay:0.10s}
+.calc-card:nth-child(4){animation-delay:0.14s}
+.calc-card:nth-child(5){animation-delay:0.18s}
+.calc-card:nth-child(6){animation-delay:0.22s}
+.calc-card:nth-child(7){animation-delay:0.26s}
+.calc-card:nth-child(8){animation-delay:0.30s}
+
+/* ===== 响应式 ===== */
+@media (max-width:1024px){
+  .hero{padding:130px 0 60px}
+  .calculator-grid{grid-template-columns:repeat(2,1fr);}
+}
+@media (max-width:768px){
+  .hero{padding:120px 0 48px}
+  .hero-stats{gap:20px}
+  .nav-links a{display:none}
+  .calculator-grid{grid-template-columns:1fr}
+  .features{grid-template-columns:1fr}
+  .category-tabs{gap:8px}
+  .section{padding:60px 0}
+}
+@media (max-width:480px){
+  .hero{padding:110px 0 36px}
+  .hero h1{font-size:2rem}
+  .stat-value{font-size:1.6rem}
+  .category-tab{padding:8px 18px;font-size:0.82rem}
+  .calc-card{padding:20px 20px 52px}
+}
+
+/* ===== 打印 ===== */
+@media print{
+  header{position:static}
+  .hero{padding:60px 0}
+  .card{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<header role="banner">
+  <div class="header-inner">
+    <span class="logo" aria-label="FinCalc Pro 首页">Fin<span>Calc</span> Pro</span>
+    <nav class="nav-links" aria-label="主导航">
+      <a href="#calculators">计算工具</a>
+      <a href="#features">特性</a>
+      <a href="#">文档</a>
+      <button
+        class="theme-toggle"
+        id="themeToggle"
+        aria-label="切换深色/浅色主题"
+        aria-pressed="false"
+      >🌙</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <!-- Hero -->
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero-content">
+      <div class="hero-badge">专业金融计算套装</div>
+      <h1 id="hero-title">智慧决策的<br><span class="accent">精准计算引擎</span></h1>
+      <p>覆盖贷款、利息、投资、税费四大领域，8 款专业计算器，助你轻松掌控每一笔财务决策。</p>
+      <button class="hero-cta" type="button">开始使用 <span aria-hidden="true">→</span></button>
+      <div class="hero-stats">
+        <div class="stat-item"><div class="stat-value">8</div><div class="stat-label">专业计算器</div></div>
+        <div class="stat-item"><div class="stat-value">4</div><div class="stat-label">金融分类</div></div>
+        <div class="stat-item"><div class="stat-value">50万+</div><div class="stat-label">月活跃用户</div></div>
+        <div class="stat-item"><div class="stat-value">99.9%</div><div class="stat-label">计算准确率</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 计算器网格 -->
+  <section class="section" id="calculators" aria-labelledby="calc-heading">
+    <div class="container">
+      <div class="section-header">
+        <h2 id="calc-heading">精选计算工具</h2>
+        <p>按分类快速找到你需要的计算器，一次输入，即刻得出精准结果。</p>
+      </div>
+      <div class="category-tabs" role="tablist" aria-label="计算器分类">
+        <button class="category-tab active" role="tab" aria-selected="true" data-cat="all">全部</button>
+        <button class="category-tab" role="tab" aria-selected="false" data-cat="loan">贷款计算</button>
+        <button class="category-tab" role="tab" aria-selected="false" data-cat="interest">利息计算</button>
+        <button class="category-tab" role="tab" aria-selected="false" data-cat="invest">投资计算</button>
+        <button class="category-tab" role="tab" aria-selected="false" data-cat="tax">税费计算</button>
+      </div>
+      <div class="calculator-grid" id="calcGrid" role="list" aria-label="计算器列表">
+        <!-- 由 JS 动态生成 -->
+      </div>
+    </div>
+  </section>
+
+  <!-- 特性展示 -->
+  <section class="section" id="features" aria-labelledby="features-heading" style="background:var(--bg-secondary)">
+    <div class="container">
+      <div class="section-header">
+        <h2 id="features-heading">为什么选择 FinCalc Pro？</h2>
+        <p>高效、精准、全面，专为金融决策打造。</p>
+      </div>
+      <div class="features">
+        <div class="feature-card card">
+          <div class="feature-icon" aria-hidden="true">⚡</div>
+          <h4>实时计算</h4>
+          <p>输入即响应，毫秒级得出精准结果，支持方案对比与可视化图表。</p>
+        </div>
+        <div class="feature-card card">
+          <div class="feature-icon" aria-hidden="true">🔒</div>
+          <h4>数据安全</h4>
+          <p>所有计算均在本地完成，不留存任何敏感数据，隐私无忧。</p>
+        </div>
+        <div class="feature-card card">
+          <div class="feature-icon" aria-hidden="true">📱</div>
+          <h4>全平台覆盖</h4>
+          <p>响应式设计，桌面、平板、手机均可流畅使用，随时随地决策。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer role="contentinfo">
+  <div class="container">
+    <p>© 2025 <a href="#">FinCalc Pro</a> — 专业金融计算工具箱 · 仅供参考，不构成投资建议</p>
+  </div>
+</footer>
+
+<script>
+// ===== 数据 =====
+const CALCULATORS = [
+  { id:'mortgage', cat:'loan', title:'房贷计算器', desc:'等额本息、等额本金双模式，支持公积金与商业贷款组合计算。', icon:'🏠' },
+  { id:'car-loan', cat:'loan', title:'车贷对比计算器', desc:'多方案并列对比，总利息、月供一目了然，选最优贷款方案。', icon:'🚗' },
+  { id:'early-repay', cat:'loan', title:'提前还款计算器', desc:'计算提前还款省下的利息与最佳还款时机，减少贷款成本。', icon:'💰' },
+  { id:'compound', cat:'interest', title:'复利计算器', desc:'按日/月/年复利，直观展示时间与收益率对财富增长的魔力。', icon:'📈' },
+  { id:'deposit', cat:'interest', title:'存款利息计算器', desc:'活期、定期、通知存款，支持不同期限与利率的利息试算。', icon:'🏦' },
+  { id:'dca', cat:'invest', title:'定投收益计算器', desc:'定期定额投资模拟，测算定投收益与复利效应，规划长期目标。', icon:'🎯' },
+  { id:'mortgage-tax', cat:'tax', title:'房贷税费计算器', desc:'契税、个税、增值税、中介费全涵盖，买房税费提前算清。', icon:'📋' },
+  { id:'car-tax', cat:'tax', title:'汽车购置税计算器', desc:'根据裸车价计算购置税、车船税等购车税费，避开隐形支出。', icon:'🚙' },
+];
+const CAT_LABELS = { loan:'贷款计算', interest:'利息计算', invest:'投资计算', tax:'税费计算' };
+
+const grid = document.getElementById('calcGrid');
+let activeCat = 'all';
+
+function render(cat){
+  const filtered = cat==='all' ? CALCULATORS : CALCULATORS.filter(c=>c.cat===cat);
+  if (filtered.length===0){
+    grid.innerHTML = `<div class="empty-state" role="status"><div class="empty-icon">🔍</div><p>当前分类下暂无计算器，请切换其他分类</p></div>`;
+    return;
+  }
+  grid.innerHTML = filtered.map(c=>`
+    <div class="card calc-card" data-cat="${c.cat}" role="listitem" tabindex="0">
+      <div class="icon-wrap" aria-hidden="true">${c.icon}</div>
+      <h3>${c.title}</h3>
+      <p>${c.desc}</p>
+      <div class="calc-tags">
+        <span class="calc-tag ${c.cat}">${CAT_LABELS[c.cat]}</span>
+      </div>
+      <div class="calc-arrow" aria-hidden="true">→</div>
+    </div>
+  `).join('');
+}
+render(activeCat);
+
+// 分类切换
+document.querySelectorAll('.category-tab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    document.querySelectorAll('.category-tab').forEach(t=>t.classList.remove('active'));
+    tab.classList.add('active');
+    activeCat = tab.dataset.cat;
+    render(activeCat);
+  });
+});
+
+// ===== 主题切换 =====
+const toggle = document.getElementById('themeToggle');
+const root = document.documentElement;
+toggle.addEventListener('click',()=>{
+  root.classList.toggle('light');
+  const isLight = root.classList.contains('light');
+  toggle.textContent = isLight ? '☀️' : '🌙';
+  toggle.setAttribute('aria-pressed', isLight ? 'true' : 'false');
+});
+</script>
+</body>
+</html>
