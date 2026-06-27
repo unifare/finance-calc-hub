@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>复利计算器 - 每日/每月/季度/年度复利收益计算 | FinCalc Pro</title>
+  <meta name="description" content="免费在线复利计算器，支持每日、每周、每月、每季度、每年复利计算。输入初始本金、年利率、投资期限，一键计算最终金额、利息收益和收益率。">
+  <meta name="keywords" content="复利计算器,复利,年化收益率,投资收益计算,定期投资,利滚利">
+  <meta name="author" content="FinCalc Pro">
+  <meta name="robots" content="index, follow">
+  
+  <link rel="canonical" href="https://financecalchub.com/compound-interest-calculator.html">
+  
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://financecalchub.com/compound-interest-calculator.html">
+  <meta property="og:title" content="复利计算器">
+  <meta property="og:description" content="支持多周期复利计算，即时查看收益增长明细。">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📈</text></svg>">
+  
+  <link rel="stylesheet" href="css/style.css">
+  
+  <!-- Schema.org -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "复利计算器",
+    "description": "计算复利投资下的最终金额和收益，支持多种复利周期",
+    "url": "https://financecalchub.com/compound-interest-calculator.html",
+    "applicationCategory": "FinanceApplication",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "CNY" }
+  }
+  </script>
+</head>
+<body>
+  <!-- Header -->
+  <header role="banner">
+    <div class="header-inner">
+      <a href="/" class="logo" aria-label="FinCalc Pro 首页">Fin<span>Calc</span> Pro</a>
+      <nav class="nav-links" aria-label="主导航">
+        <a href="/#calculators">计算工具</a>
+        <a href="/#features">特性</a>
+        <a href="#">文档</a>
+        <button class="theme-toggle" id="themeToggle" aria-label="切换深色/浅色主题" aria-pressed="false">🌙</button>
+      </nav>
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="菜单">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="calculator-page">
+    <div class="container">
+      <div class="section-header text-left mb-8">
+        <h1>复利计算器</h1>
+        <p>计算本金在复利效应下的最终金额，支持日/周/月/季度/年多种复利周期</p>
+      </div>
+      
+      <div class="calculator-layout">
+        <!-- Calculator Form -->
+        <div class="calculator-form-section">
+          <!-- Principal -->
+          <div class="form-group">
+            <label class="form-label">初始本金</label>
+            <div class="form-input-wrapper">
+              <span class="form-input-currency">¥</span>
+              <input type="number" class="form-input" id="principal" value="100000" min="0" step="1000">
+            </div>
+            <div class="quick-buttons">
+              <button class="quick-btn" data-value="10000">1万</button>
+              <button class="quick-btn" data-value="50000">5万</button>
+              <button class="quick-btn active" data-value="100000">10万</button>
+              <button class="quick-btn" data-value="500000">50万</button>
+              <button class="quick-btn" data-value="1000000">100万</button>
+            </div>
+          </div>
+
+          <!-- Annual Interest Rate -->
+          <div class="form-group">
+            <label class="form-label">年利率</label>
+            <div class="form-input-wrapper">
+              <input type="number" class="form-input" id="annualRate" value="5.0" min="0" max="50" step="0.1" style="padding-right: 50px;">
+              <span class="form-input-suffix">%</span>
+            </div>
+            <div class="quick-buttons">
+              <button class="quick-btn" data-value="3">3%</button>
+              <button class="quick-btn" data-value="4">4%</button>
+              <button class="quick-btn active" data-value="5">5%</button>
+              <button class="quick-btn" data-value="6">6%</button>
+              <button class="quick-btn" data-value="8">8%</button>
+              <button class="quick-btn" data-value="10">10%</button>
+            </div>
+          </div>
+
+          <!-- Compounding Frequency -->
+          <div class="form-group">
+            <label class="form-label">复利周期</label>
+            <div class="form-tabs">
+              <button class="form-tab" data-frequency="365">每日</button>
+              <button class="form-tab" data-frequency="52">每周</button>
+              <button class="form-tab active" data-frequency="12">每月</button>
+              <button class="form-tab" data-frequency="4">每季度</button>
+              <button class="form-tab" data-frequency="1">每年</button>
+            </div>
+          </div>
+
+          <!-- Investment Period -->
+          <div class="form-group">
+            <label class="form-label">投资年限</label>
+            <input type="range" class="form-range" id="years" min="1" max="40" value="10" step="1">
+            <div class="range-value">
+              <span>1年</span>
+              <span>40年</span>
+            </div>
+            <p class="text-center mt-2">投资期限：<span id="yearsDisplay" class="font-bold text-primary">10年</span></p>
+            <div class="quick-buttons">
+              <button class="quick-btn" data-value="1">1年</button>
+              <button class="quick-btn" data-value="5">5年</button>
+              <button class="quick-btn active" data-value="10">10年</button>
+              <button class="quick-btn" data-value="20">20年</button>
+              <button class="quick-btn" data-value="30">30年</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Results Section -->
+        <div class="calculator-results-section">
+          <div class="result-card">
+            <div class="result-card-header">
+              <h3 class="result-card-title">复利计算结果</h3>
+              <span id="resultFrequency" class="text-muted text-sm">按月复利</span>
+            </div>
+            
+            <!-- Main Result -->
+            <div class="result-highlight">
+              <div class="result-highlight-value" id="finalAmount">164,700.94</div>
+              <div class="result-highlight-label">最终金额</div>
+            </div>
+            
+            <div class="result-grid">
+              <div class="result-item">
+                <div class="result-item-label">本金</div>
+                <div class="result-item-value" id="resultPrincipal">100,000.00</div>
+              </div>
+              <div class="result-item">
+                <div class="result-item-label">利息收益</div>
+                <div class="result-item-value text-success" id="resultInterest">64,700.94</div>
+              </div>
+              <div class="result-item">
+                <div class="result-item-label">收益率</div>
+                <div class="result-item-value text-primary" id="resultReturnRate">64.70%</div>
+              </div>
+              <div class="result-item">
+                <div class="result-item-label">年化收益</div>
+                <div class="result-item-value text-primary" id="resultAnnualReturn">5.12%</div>
+              </div>
+            </div>
+            
+            <!-- Growth Chart -->
+            <div class="chart-container">
+              <div class="chart-title">收益增长趋势</div>
+              <canvas id="lineChart" width="400" height="200" style="max-width: 100%;"></canvas>
+            </div>
+            
+            <!-- Breakdown Table -->
+            <div class="result-breakdown">
+              <div class="result-breakdown-title">
+                <span>年度收益明细</span>
+                <button class="toggle-btn" id="toggleBreakdown">
+                  展开
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="6,9 12,15 18,9"></polyline>
+                  </svg>
+                </button>
+              </div>
+              <div id="breakdownContent" class="hidden">
+                <table class="result-table">
+                  <thead>
+                    <tr>
+                      <th>年份</th>
+                      <th>年初本金</th>
+                      <th>利息收益</th>
+                      <th>年末本息</th>
+                    </tr>
+                  </thead>
+                  <tbody id="breakdownTableBody">
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+
+      <!-- SEO Content -->
+      <div class="seo-content">
+        <h2>关于复利计算器</h2>
+        <p>复利计算器帮助您计算在复利效应下投资的最终金额。爱因斯坦曾说："复利是世界第八大奇迹，理解它的人赚取它，不理解的人支付它。"</p>
+        
+        <h3>什么是复利？</h3>
+        <p>复利是指每期产生的利息会加入本金，在下一期产生利息的计息方式。与单利不同，复利让利息也能产生利息，实现"利滚利"的效应。</p>
+        
+        <h3>复利公式</h3>
+        <p><strong>最终金额 = 本金 × (1 + 年利率 / 复利频率)^(复利频率 × 年数)</strong></p>
+        <p>其中复利频率：每日=365，每周=52，每月=12，每季度=4，每年=1</p>
+        
+        <h3>复利周期的影响</h3>
+        <ul>
+          <li><strong>每日复利</strong>：利息每天计入本金，理论收益最高</li>
+          <li><strong>每月复利</strong>：常见选择，收益较为均衡</li>
+          <li><strong>每年复利</strong>：计算简单，适合长期投资</li>
+        </ul>
+        
+        <h3>复利与单利的区别</h3>
+        <p>以100,000元、年利率5%、10年期为例：</p>
+        <ul>
+          <li><strong>单利</strong>：100,000 + (100,000 × 5% × 10) = 150,000元</li>
+          <li><strong>复利(年)</strong>：100,000 × (1 + 5%)^10 = 162,889元</li>
+          <li><strong>复利(月)</strong>：100,000 × (1 + 5%/12)^120 = 164,701元</li>
+        </ul>
+        
+        <h3>72法则</h3>
+        <p>72法则是一个快速估算复利翻倍时间的方法：用72除以年收益率，得到的数字就是本金翻倍所需的大致年数。例如，年收益率6%时，72÷6=12年，12年可实现翻倍。</p>
+        
+        <!-- FAQ Section -->
+        <div class="faq-section">
+          <h3>常见问题</h3>
+          
+          <div class="faq-item">
+            <div class="faq-question">复利和单利有什么区别？</div>
+            <div class="faq-answer">
+              单利只计算本金的利息，而复利会将每期利息加入本金，下一期利息基于新的本金计算。长期来看，复利的收益会显著高于单利。
+            </div>
+          </div>
+          
+          <div class="faq-item">
+            <div class="faq-question">哪个复利周期最划算？</div>
+            <div class="faq-answer">
+              在相同年利率下，复利频率越高，最终收益越多。每日复利理论收益最高，但实际收益差异不大。常见选择是按月复利。
+            </div>
+          </div>
+          
+          <div class="faq-item">
+            <div class="faq-question">复利计算器适用于哪些场景？</div>
+            <div class="faq-answer">
+              适用于定期存款、理财产品、基金定投、养老保险、公积金等各类复利计息的投资产品收益计算。
+            </div>
+          </div>
+          
+          <div class="faq-item">
+            <div class="faq-question">如何利用复利实现财富增长？</div>
+            <div class="faq-answer">
+              1. 尽早开始投资，时间是复利最大的优势；2. 选择稳定的投资产品；3. 坚持定期投入；4. 尽可能提高收益率；5. 避免频繁取出利息。
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer role="contentinfo">
+    <div class="container">
+      <p>© 2025 <a href="/">FinCalc Pro</a> — 专业金融计算工具箱 · 仅供参考，不构成投资建议</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script>
+    (function() {
+      // State
+      let state = {
+        principal: 100000,
+        annualRate: 5.0,
+        frequency: 12,
+        years: 10
+      };
+      
+      const frequencyLabels = {
+        365: '按日复利',
+        52: '按周复利',
+        12: '按月复利',
+        4: '按季度复利',
+        1: '按年复利'
+      };
+      
+      // DOM Elements
+      const elements = {
+        principal: document.getElementById('principal'),
+        annualRate: document.getElementById('annualRate'),
+        years: document.getElementById('years'),
+        yearsDisplay: document.getElementById('yearsDisplay'),
+        resultFrequency: document.getElementById('resultFrequency'),
+        finalAmount: document.getElementById('finalAmount'),
+        resultPrincipal: document.getElementById('resultPrincipal'),
+        resultInterest: document.getElementById('resultInterest'),
+        resultReturnRate: document.getElementById('resultReturnRate'),
+        resultAnnualReturn: document.getElementById('resultAnnualReturn'),
+        breakdownTableBody: document.getElementById('breakdownTableBody'),
+        toggleBreakdown: document.getElementById('toggleBreakdown'),
+        breakdownContent: document.getElementById('breakdownContent')
+      };
+      
+      function init() {
+        bindEvents();
+        calculate();
+        FinanceCalc.onThemeChange(() => calculate());
+      }
+      
+      function bindEvents() {
+        elements.principal.addEventListener('input', function() {
+          state.principal = parseFloat(this.value) || 0;
+          calculate();
+        });
+        
+        elements.annualRate.addEventListener('input', function() {
+          state.annualRate = parseFloat(this.value) || 0;
+          calculate();
+        });
+        
+        elements.years.addEventListener('input', function() {
+          state.years = parseInt(this.value) || 1;
+          elements.yearsDisplay.textContent = state.years + '年';
+          calculate();
+        });
+        
+        // Frequency tabs
+        document.querySelectorAll('.form-tab[data-frequency]').forEach(tab => {
+          tab.addEventListener('click', function() {
+            document.querySelectorAll('.form-tab[data-frequency]').forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+            state.frequency = parseInt(this.dataset.frequency);
+            elements.resultFrequency.textContent = frequencyLabels[state.frequency];
+            calculate();
+          });
+        });
+        
+        // Quick buttons
+        document.querySelectorAll('.form-group:nth-of-type(1) .quick-btn').forEach(btn => {
+          btn.addEventListener('click', function() {
+            elements.principal.value = this.dataset.value;
+            state.principal = parseFloat(this.dataset.value);
+            document.querySelectorAll('.form-group:nth-of-type(1) .quick-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            calculate();
+          });
+        });
+        
+        document.querySelectorAll('.form-group:nth-of-type(2) .quick-btn').forEach(btn => {
+          btn.addEventListener('click', function() {
+            elements.annualRate.value = this.dataset.value;
+            state.annualRate = parseFloat(this.dataset.value);
+            document.querySelectorAll('.form-group:nth-of-type(2) .quick-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            calculate();
+          });
+        });
+        
+        document.querySelectorAll('.form-group:nth-of-type(4) .quick-btn').forEach(btn => {
+          btn.addEventListener('click', function() {
+            elements.years.value = this.dataset.value;
+            state.years = parseInt(this.dataset.value);
+            elements.yearsDisplay.textContent = state.years + '年';
+            document.querySelectorAll('.form-group:nth-of-type(4) .quick-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            calculate();
+          });
+        });
+        
+        // Toggle breakdown
+        elements.toggleBreakdown.addEventListener('click', function() {
+          const isHidden = elements.breakdownContent.classList.contains('hidden');
+          elements.breakdownContent.classList.toggle('hidden');
+          this.innerHTML = isHidden ? 
+            '收起 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18,15 12,9 6,15"></polyline></svg>' :
+            '展开 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6,9 12,15 18,9"></polyline></svg>';
+        });
+      }
+      
+      function calculate() {
+        const { principal, annualRate, frequency, years } = state;
+        
+        // Calculate final amount using compound interest formula
+        // A = P(1 + r/n)^(nt)
+        const ratePerPeriod = (annualRate / 100) / frequency;
+        const totalPeriods = frequency * years;
+        const finalAmount = principal * Math.pow(1 + ratePerPeriod, totalPeriods);
+        const totalInterest = finalAmount - principal;
+        const returnRate = (totalInterest / principal) * 100;
+        const annualReturn = (Math.pow(finalAmount / principal, 1 / years) - 1) * 100;
+        
+        // Update UI
+        elements.finalAmount.textContent = FinanceCalc.formatCurrency(finalAmount).replace('¥', '');
+        elements.resultPrincipal.textContent = FinanceCalc.formatCurrency(principal);
+        elements.resultInterest.textContent = FinanceCalc.formatCurrency(totalInterest);
+        elements.resultReturnRate.textContent = returnRate.toFixed(2) + '%';
+        elements.resultAnnualReturn.textContent = annualReturn.toFixed(2) + '%';
+        
+        // Generate yearly breakdown
+        generateYearlyBreakdown(principal, annualRate, frequency, years);
+        
+        // Render chart
+        renderGrowthChart(principal, annualRate, frequency, years, finalAmount);
+      }
+      
+      function generateYearlyBreakdown(principal, annualRate, frequency, years) {
+        const tbody = elements.breakdownTableBody;
+        tbody.innerHTML = '';
+        
+        const ratePerPeriod = (annualRate / 100) / frequency;
+        const periodsPerYear = frequency;
+        
+        let currentPrincipal = principal;
+        
+        for (let year = 1; year <= years; year++) {
+          const startPrincipal = currentPrincipal;
+          const periodsInYear = periodsPerYear;
+          
+          // Calculate interest for the year
+          let yearEndPrincipal = startPrincipal;
+          for (let p = 0; p < periodsInYear; p++) {
+            yearEndPrincipal = yearEndPrincipal * (1 + ratePerPeriod);
+          }
+          
+          const yearInterest = yearEndPrincipal - startPrincipal;
+          
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>第${year}年</td>
+            <td>${FinanceCalc.formatCurrency(startPrincipal)}</td>
+            <td>${FinanceCalc.formatCurrency(yearInterest)}</td>
+            <td>${FinanceCalc.formatCurrency(yearEndPrincipal)}</td>
+          `;
+          tbody.appendChild(tr);
+          
+          currentPrincipal = yearEndPrincipal;
+        }
+      }
+      
+      function renderGrowthChart(principal, annualRate, frequency, years, finalAmount) {
+        const canvas = document.getElementById('lineChart');
+        if (!canvas) return;
+
+        const colors = FinanceCalc.getChartColors();
+        const ctx = canvas.getContext('2d');
+        const dpr = window.devicePixelRatio || 1;
+
+        canvas.width = canvas.offsetWidth * dpr;
+        canvas.height = canvas.offsetHeight * dpr;
+        ctx.scale(dpr, dpr);
+
+        const width = canvas.offsetWidth;
+        const height = canvas.offsetHeight;
+        const padding = 40;
+
+        const chartWidth = width - padding * 2;
+        const chartHeight = height - padding * 2;
+
+        const dataPoints = [];
+        const ratePerPeriod = (annualRate / 100) / frequency;
+        let current = principal;
+
+        for (let year = 0; year <= years; year++) {
+          dataPoints.push({ year, value: current });
+          current = current * Math.pow(1 + ratePerPeriod, frequency);
+        }
+
+        const maxValue = finalAmount;
+
+        ctx.clearRect(0, 0, width, height);
+
+        // Draw grid
+        ctx.strokeStyle = colors.grid;
+        ctx.lineWidth = 1;
+        for (let i = 0; i <= 4; i++) {
+          const y = padding + (chartHeight / 4) * i;
+          ctx.beginPath();
+          ctx.moveTo(padding, y);
+          ctx.lineTo(width - padding, y);
+          ctx.stroke();
+
+          const value = maxValue - (maxValue / 4) * i;
+          ctx.fillStyle = colors.text;
+          ctx.font = '10px var(--font-sans)';
+          ctx.textAlign = 'left';
+          ctx.fillText(FinanceCalc.formatNumber(value / 10000, 0) + '万', padding - 5, y + 3);
+        }
+
+        // Draw area
+        ctx.beginPath();
+        ctx.moveTo(padding, height - padding);
+        dataPoints.forEach((point, index) => {
+          const x = padding + (index / years) * chartWidth;
+          const y = padding + chartHeight - (point.value / maxValue) * chartHeight;
+          ctx.lineTo(x, y);
+        });
+        ctx.lineTo(padding + chartWidth, height - padding);
+        ctx.closePath();
+
+        const gradient = ctx.createLinearGradient(0, padding, 0, height - padding);
+        gradient.addColorStop(0, hexToRgba(colors.success, 0.2));
+        gradient.addColorStop(1, hexToRgba(colors.success, 0));
+        ctx.fillStyle = gradient;
+        ctx.fill();
+
+        // Draw line
+        ctx.beginPath();
+        dataPoints.forEach((point, index) => {
+          const x = padding + (index / years) * chartWidth;
+          const y = padding + chartHeight - (point.value / maxValue) * chartHeight;
+          if (index === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        });
+        ctx.strokeStyle = colors.success;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // Draw points
+        dataPoints.forEach((point, index) => {
+          const x = padding + (index / years) * chartWidth;
+          const y = padding + chartHeight - (point.value / maxValue) * chartHeight;
+
+          ctx.beginPath();
+          ctx.arc(x, y, 4, 0, Math.PI * 2);
+          ctx.fillStyle = colors.success;
+          ctx.fill();
+          ctx.strokeStyle = colors.bg;
+          ctx.lineWidth = 2;
+          ctx.stroke();
+        });
+
+        // X-axis labels
+        for (let i = 0; i <= years; i += Math.max(1, Math.floor(years / 5))) {
+          const x = padding + (i / years) * chartWidth;
+          ctx.fillStyle = colors.text;
+          ctx.font = '10px var(--font-sans)';
+          ctx.textAlign = 'center';
+          ctx.fillText(i + '年', x, height - 10);
+        }
+      }
+
+      // Convert hex color to rgba string
+      function hexToRgba(hex, alpha) {
+        const r = parseInt(hex.slice(1, 3), 16);
+        const g = parseInt(hex.slice(3, 5), 16);
+        const b = parseInt(hex.slice(5, 7), 16);
+        return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+      }
+      
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else {
+        init();
+      }
+    })();
+  </script>
+</body>
+</html>
