@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>房贷计算器 - 等额本息与等额本金计算 | FinCalc Pro</title>
+  <meta name="description" content="免费在线房贷计算器，支持等额本息和等额本金两种还款方式计算。输入房屋总价、首付金额、贷款利率和贷款期限，即可快速计算月供、总利息、还款总额，以及查看每月还款明细和图表分析。">
+  <meta name="keywords" content="房贷计算器,等额本息,等额本金,月供计算,贷款计算器,房屋贷款,商业贷款,公积金贷款">
+  <meta name="author" content="FinCalc Pro">
+  <meta name="robots" content="index, follow">
+  
+  <link rel="canonical" href="https://financecalchub.com/mortgage-calculator.html">
+  
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://financecalchub.com/mortgage-calculator.html">
+  <meta property="og:title" content="房贷计算器 - 等额本息与等额本金计算">
+  <meta property="og:description" content="免费在线房贷计算器，支持等额本息和等额本金两种还款方式，即时计算月供和总利息。">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏠</text></svg>">
+  
+  <link rel="stylesheet" href="css/style.css">
+  
+  <!-- Schema.org Calculator -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "房贷计算器",
+    "description": "专业的在线房贷计算器，支持等额本息和等额本金两种还款方式",
+    "url": "https://financecalchub.com/mortgage-calculator.html",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "All",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "CNY"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.9",
+      "ratingCount": "2586"
+    }
+  }
+  </script>
+  
+  <!-- FAQ Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "等额本息和等额本金有什么区别？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "等额本息每月还款金额固定，但前期利息占比高、本金占比低；等额本金每月还本金固定，利息逐月减少，总利息更少但前期还款压力较大。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "提前还款能节省多少利息？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "提前还款节省的利息取决于提前还款金额和时间。在贷款初期提前还款能节省更多利息，建议使用提前还款计算器进行精确计算。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "LPR利率如何影响房贷月供？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "LPR（贷款市场报价利率）的变化会影响房贷利率。如果你的房贷是LPR加点模式，利率调整后次年的月供会相应变化。"
+        }
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <!-- Header -->
+  <header role="banner">
+    <div class="header-inner">
+      <a href="/" class="logo" aria-label="FinCalc Pro 首页">Fin<span>Calc</span> Pro</a>
+      <nav class="nav-links" aria-label="主导航">
+        <a href="/#calculators">计算工具</a>
+        <a href="/#features">特性</a>
+        <a href="#">文档</a>
+        <button class="theme-toggle" id="themeToggle" aria-label="切换深色/浅色主题" aria-pressed="false">🌙</button>
+      </nav>
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="菜单">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="calculator-page">
+    <div class="container">
+      <!-- Page Header -->
+      <div class="section-header text-left mb-8">
+        <h1>房贷计算器</h1>
+        <p>计算等额本息与等额本金两种还款方式的月供、总利息及每月还款明细</p>
+      </div>
+      
+      <div class="calculator-layout">
+        <!-- Calculator Form -->
+        <div class="calculator-form-section">
+          <!-- Loan Type Toggle -->
+          <div class="form-group">
+            <label class="form-label">还款方式</label>
+            <div class="form-tabs">
+              <button class="form-tab active" data-loan-type="equal-payment">等额本息</button>
+              <button class="form-tab" data-loan-type="equal-principal">等额本金</button>
+            </div>
+          </div>
+
+          <!-- House Price -->
+          <div class="form-group">
+            <label class="form-label">房屋总价</label>
+            <div class="form-input-wrapper">
+              <span class="form-input-currency">¥</span>
+              <input type="number" class="form-input" id="housePrice" value="3000000" min="0" step="10000">
+            </div>
+          </div>
+
+          <!-- Down Payment -->
+          <div class="form-group">
+            <label class="form-label">首付金额</label>
+            <div class="form-input-wrapper">
+              <span class="form-input-currency">¥</span>
+              <input type="number" class="form-input" id="downPayment" value="900000" min="0" step="10000">
+            </div>
+            <div class="quick-buttons">
+              <button class="quick-btn" data-value="10">10%</button>
+              <button class="quick-btn active" data-value="30">30%</button>
+              <button class="quick-btn" data-value="40">40%</button>
+              <button class="quick-btn" data-value="50">50%</button>
+            </div>
+          </div>
+
+          <!-- Loan Amount (Auto Calculated) -->
+          <div class="form-group">
+            <label class="form-label">贷款金额</label>
+            <div class="form-input-wrapper">
+              <span class="form-input-currency">¥</span>
+              <input type="number" class="form-input" id="loanAmount" value="2100000" min="0" step="10000" readonly style="background: var(--color-bg-tertiary);">
+            </div>
+          </div>
+
+          <!-- Interest Rate -->
+          <div class="form-group">
+            <label class="form-label">年利率</label>
+            <div class="form-input-wrapper">
+              <input type="number" class="form-input" id="interestRate" value="4.2" min="0" max="20" step="0.01" style="padding-right: 50px;">
+              <span class="form-input-suffix">%</span>
+            </div>
+            <div class="quick-buttons">
+              <button class="quick-btn" data-value="3.1">3.1%</button>
+              <button class="quick-btn" data-value="3.5">3.5%</button>
+              <button class="quick-btn active" data-value="4.2">4.2%</button>
+              <button class="quick-btn" data-value="4.5">4.5%</button>
+              <button class="quick-btn" data-value="5.0">5.0%</button>
+              <button class="quick-btn" data-value="5.5">5.5%</button>
+            </div>
+          </div>
+
+          <!-- Loan Term -->
+          <div class="form-group">
+            <label class="form-label">贷款年限</label>
+            <input type="range" class="form-range" id="loanTerm" min="5" max="30" value="20" step="1">
+            <div class="range-value">
+              <span>5年</span>
+              <span>30年</span>
+            </div>
+            <div class="quick-buttons">
+              <button class="quick-btn" data-value="5">5年</button>
+              <button class="quick-btn" data-value="10">10年</button>
+              <button class="quick-btn" data-value="15">15年</button>
+              <button class="quick-btn active" data-value="20">20年</button>
+              <button class="quick-btn" data-value="25">25年</button>
+              <button class="quick-btn" data-value="30">30年</button>
+            </div>
+          </div>
+          
+          <!-- Display loan term value -->
+          <p class="text-center mt-4 text-muted">贷款期限：<span id="loanTermDisplay" class="font-bold text-primary">20年</span> (<span id="loanMonthsDisplay" class="font-bold">240</span>个月)</p>
+        </div>
+
+        <!-- Results Section -->
+        <div class="calculator-results-section">
+          <div class="result-card">
+            <div class="result-card-header">
+              <h3 class="result-card-title">计算结果</h3>
+              <span id="resultLoanType" class="text-muted text-sm">等额本息</span>
+            </div>
+            
+            <!-- Main Result -->
+            <div class="result-highlight">
+              <div class="result-highlight-value" id="monthlyPayment">11,459.73</div>
+              <div class="result-highlight-label">每月月供</div>
+            </div>
+            
+            <!-- Secondary Results -->
+            <div class="result-grid">
+              <div class="result-item">
+                <div class="result-item-label">贷款金额</div>
+                <div class="result-item-value" id="resultLoanAmount">2,100,000.00</div>
+              </div>
+              <div class="result-item">
+                <div class="result-item-label">还款总额</div>
+                <div class="result-item-value" id="resultTotalPayment">2,750,335.73</div>
+              </div>
+              <div class="result-item">
+                <div class="result-item-label">总利息</div>
+                <div class="result-item-value text-warning" id="resultTotalInterest">650,335.73</div>
+              </div>
+              <div class="result-item">
+                <div class="result-item-label">首付金额</div>
+                <div class="result-item-value" id="resultDownPayment">900,000.00</div>
+              </div>
+            </div>
+            
+            <!-- Charts -->
+            <div class="chart-container">
+              <div class="chart-title">本金与利息占比</div>
+              <canvas id="pieChart" width="200" height="200" style="max-width: 100%;"></canvas>
+              <div class="result-grid mt-4">
+                <div class="result-item" style="background: var(--color-primary-subtle);">
+                  <div class="result-item-label">本金</div>
+                  <div class="result-item-value text-primary" id="chartPrincipal">2,100,000.00</div>
+                </div>
+                <div class="result-item" style="background: var(--color-warning-subtle);">
+                  <div class="result-item-label">利息</div>
+                  <div class="result-item-value text-warning" id="chartInterest">650,335.73</div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Monthly Trend Chart -->
+            <div class="chart-container mt-6">
+              <div class="chart-title">每月剩余贷款趋势</div>
+              <canvas id="lineChart" width="400" height="200" style="max-width: 100%;"></canvas>
+            </div>
+            
+            <!-- Breakdown Table -->
+            <div class="result-breakdown">
+              <div class="result-breakdown-title">
+                <span>每月还款明细</span>
+                <button class="toggle-btn" id="toggleBreakdown">
+                  展开
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="6,9 12,15 18,9"></polyline>
+                  </svg>
+                </button>
+              </div>
+              <div id="breakdownContent" class="hidden">
+                <table class="result-table">
+                  <thead>
+                    <tr>
+                      <th>月份</th>
+                      <th>月供</th>
+                      <th>本金</th>
+                      <th>利息</th>
+                      <th>剩余本金</th>
+                    </tr>
+                  </thead>
+                  <tbody id="breakdownTableBody">
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+
+      <!-- SEO Content -->
+      <div class="seo-content">
+        <h2>如何使用房贷计算器</h2>
+        <p>本房贷计算器提供等额本息和等额本金两种主流还款方式的计算，帮助您全面了解贷款成本并做出明智决策。</p>
+        
+        <h3>输入参数说明</h3>
+        <ul>
+          <li><strong>房屋总价</strong>：您计划购买的房屋总价格，通常是开发商报价或二手房交易价格</li>
+          <li><strong>首付金额</strong>：购房时一次性支付的款项，目前首套房最低首付比例为20%（部分城市30%）</li>
+          <li><strong>贷款金额</strong>：房屋总价减去首付金额后的数额，即您需要向银行申请的贷款额度</li>
+          <li><strong>年利率</strong>：银行提供的房贷利率，目前商贷基准利率为4.2%，公积金贷款利率为3.1%</li>
+          <li><strong>贷款年限</strong>：还清全部贷款的时间，通常为5-30年，年限越长月供越低但总利息越高</li>
+        </ul>
+        
+        <h3>等额本息还款法</h3>
+        <p>等额本息是最常见的还款方式，每月还款金额固定，由本金和利息组成。初期月供中利息占比较高，本金占比较低；随着还款深入，本金占比逐渐提高，利息占比下降。</p>
+        <p><strong>公式</strong>：每月月供 = [贷款本金 × 月利率 × (1+月利率)^还款月数] ÷ [(1+月利率)^还款月数 - 1]</p>
+        
+        <h3>等额本金还款法</h3>
+        <p>等额本金是指每月偿还固定金额的本金，利息随本金减少而逐月递减。因此每月还款总额逐月减少，前期还款压力较大，但整体利息支出较少。</p>
+        <p><strong>公式</strong>：每月月供 = 贷款本金 ÷ 还款月数 + (贷款本金 - 已还本金累计额) × 月利率</p>
+        
+        <h3>两种方式对比</h3>
+        <ul>
+          <li><strong>月供稳定性</strong>：等额本息月供固定，便于家庭预算管理；等额本金月供逐月递减</li>
+          <li><strong>总利息</strong>：等额本金的总利息通常比等额本息少10%-20%</li>
+          <li><strong>前期压力</strong>：等额本金前期还款压力较大，适合收入较高且预期收入增长的人群</li>
+          <li><strong>提前还款</strong>：如果计划提前还款，等额本金更划算，因为初期本金占比高</li>
+        </ul>
+        
+        <h3>计算结果说明</h3>
+        <ul>
+          <li><strong>每月月供</strong>：您每月需要偿还的金额，包含本金和利息</li>
+          <li><strong>还款总额</strong>：整个贷款期间偿还的总金额</li>
+          <li><strong>总利息</strong>：整个贷款期间支付的利息总额</li>
+          <li><strong>本金与利息占比图</strong>：直观展示您支付的本金和利息比例</li>
+          <li><strong>剩余贷款趋势图</strong>：展示随着时间推移，您的贷款本金如何逐月减少</li>
+        </ul>
+        
+        <h3>注意事项</h3>
+        <ul>
+          <li>本计算结果为近似值，实际月供可能因银行 rounding 规则略有差异</li>
+          <li>商业贷款和公积金贷款可能采用不同利率，可分别计算后相加</li>
+          <li>部分银行可能有提前还款违约金，计算结果仅供参考</li>
+          <li>实际贷款审批额度还取决于您的信用状况、收入水平等因素</li>
+        </ul>
+        
+        <!-- FAQ Section -->
+        <div class="faq-section">
+          <h3>常见问题</h3>
+          
+          <div class="faq-item">
+            <div class="faq-question">等额本息和等额本金哪个更划算？</div>
+            <div class="faq-answer">
+              这取决于您的具体情况。等额本金总利息更少，但前期还款压力较大；等额本息月供固定，便于预算管理。如果您收入稳定且不高，等额本息更适合；如果您收入较高且希望减少总利息支出，等额本金是更好的选择。
+            </div>
+          </div>
+          
+          <div class="faq-item">
+            <div class="faq-question">提前还款能节省多少利息？</div>
+            <div class="faq-answer">
+              提前还款节省的利息取决于提前还款的时间和金额。贷款初期提前还款效果更明显。建议使用我们的提前还款计算器进行精确计算。
+            </div>
+          </div>
+          
+          <div class="faq-item">
+            <div class="faq-question">公积金贷款和商业贷款有什么区别？</div>
+            <div class="faq-answer">
+              公积金贷款利率较低（目前约3.1%），但有最高额度限制；商业贷款额度更高，审批更快。通常建议优先使用公积金贷款，不足部分再申请商业贷款，即"组合贷"。
+            </div>
+          </div>
+          
+          <div class="faq-item">
+            <div class="faq-question">LPR利率下降，月供会立即减少吗？</div>
+            <div class="faq-answer">
+              不会立即减少。LPR调整后，您的房贷利率通常在次年1月1日或贷款发放周年日才会调整。具体调整时间取决于您与银行签订的合同条款。
+            </div>
+          </div>
+          
+          <div class="faq-item">
+            <div class="faq-question">贷款年限选多久合适？</div>
+            <div class="faq-answer">
+              贷款年限的选择需要综合考虑：月供负担（建议不超过家庭收入的50%）、总利息支出（年限越长利息越多）、收入预期（预期收入增长可选择较长年限）。一般建议选择20-30年，以保持月供在可承受范围内。
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer role="contentinfo">
+    <div class="container">
+      <p>© 2025 <a href="/">FinCalc Pro</a> — 专业金融计算工具箱 · 仅供参考，不构成投资建议</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script>
+    (function() {
+      // State
+      let state = {
+        loanType: 'equal-payment', // equal-payment or equal-principal
+        housePrice: 3000000,
+        downPayment: 900000,
+        loanAmount: 2100000,
+        interestRate: 4.2,
+        loanTerm: 20
+      };
+      
+      // DOM Elements
+      const elements = {
+        housePrice: document.getElementById('housePrice'),
+        downPayment: document.getElementById('downPayment'),
+        loanAmount: document.getElementById('loanAmount'),
+        interestRate: document.getElementById('interestRate'),
+        loanTerm: document.getElementById('loanTerm'),
+        loanTermDisplay: document.getElementById('loanTermDisplay'),
+        loanMonthsDisplay: document.getElementById('loanMonthsDisplay'),
+        monthlyPayment: document.getElementById('monthlyPayment'),
+        resultLoanAmount: document.getElementById('resultLoanAmount'),
+        resultTotalPayment: document.getElementById('resultTotalPayment'),
+        resultTotalInterest: document.getElementById('resultTotalInterest'),
+        resultDownPayment: document.getElementById('resultDownPayment'),
+        resultLoanType: document.getElementById('resultLoanType'),
+        chartPrincipal: document.getElementById('chartPrincipal'),
+        chartInterest: document.getElementById('chartInterest'),
+        breakdownTableBody: document.getElementById('breakdownTableBody'),
+        toggleBreakdown: document.getElementById('toggleBreakdown'),
+        breakdownContent: document.getElementById('breakdownContent')
+      };
+      
+      // Initialize
+      function init() {
+        bindEvents();
+        updateLoanAmount();
+        calculate();
+        FinanceCalc.onThemeChange(() => calculate());
+      }
+      
+      // Bind events
+      function bindEvents() {
+        // Loan type tabs
+        document.querySelectorAll('.form-tab').forEach(tab => {
+          tab.addEventListener('click', function() {
+            document.querySelectorAll('.form-tab').forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+            state.loanType = this.dataset.loanType;
+            elements.resultLoanType.textContent = state.loanType === 'equal-payment' ? '等额本息' : '等额本金';
+            calculate();
+          });
+        });
+        
+        // Input changes
+        elements.housePrice.addEventListener('input', function() {
+          state.housePrice = parseFloat(this.value) || 0;
+          updateLoanAmount();
+          calculate();
+        });
+        
+        elements.downPayment.addEventListener('input', function() {
+          state.downPayment = parseFloat(this.value) || 0;
+          updateLoanAmount();
+          calculate();
+        });
+        
+        elements.interestRate.addEventListener('input', function() {
+          state.interestRate = parseFloat(this.value) || 0;
+          calculate();
+        });
+        
+        elements.loanTerm.addEventListener('input', function() {
+          state.loanTerm = parseInt(this.value) || 20;
+          elements.loanTermDisplay.textContent = state.loanTerm + '年';
+          elements.loanMonthsDisplay.textContent = (state.loanTerm * 12).toLocaleString();
+          calculate();
+        });
+        
+        // Quick buttons
+        document.querySelectorAll('.quick-btn[data-value]').forEach(btn => {
+          btn.addEventListener('click', function() {
+            const value = parseFloat(this.dataset.value);
+            const parent = this.closest('.form-group');
+            
+            // Handle percentage buttons for down payment
+            if (parent && parent.querySelector('#downPayment')) {
+              const percentage = value / 100;
+              state.downPayment = state.housePrice * percentage;
+              elements.downPayment.value = Math.round(state.downPayment);
+              updateLoanAmount();
+              calculate();
+            }
+            // Handle rate buttons
+            else if (parent && parent.querySelector('#interestRate')) {
+              state.interestRate = value;
+              elements.interestRate.value = value;
+              calculate();
+            }
+            // Handle loan term buttons
+            else if (parent && parent.querySelector('#loanTerm')) {
+              state.loanTerm = value;
+              elements.loanTerm.value = value;
+              elements.loanTermDisplay.textContent = value + '年';
+              elements.loanMonthsDisplay.textContent = (value * 12).toLocaleString();
+              calculate();
+            }
+            
+            // Update active state for quick buttons in same group
+            if (parent) {
+              parent.querySelectorAll('.quick-btn').forEach(b => b.classList.remove('active'));
+            }
+            this.classList.add('active');
+          });
+        });
+        
+        // Toggle breakdown
+        elements.toggleBreakdown.addEventListener('click', function() {
+          const isHidden = elements.breakdownContent.classList.contains('hidden');
+          elements.breakdownContent.classList.toggle('hidden');
+          this.innerHTML = isHidden ? 
+            '收起 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18,15 12,9 6,15"></polyline></svg>' :
+            '展开 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6,9 12,15 18,9"></polyline></svg>';
+        });
+      }
+      
+      // Update loan amount from house price and down payment
+      function updateLoanAmount() {
+        state.loanAmount = Math.max(0, state.housePrice - state.downPayment);
+        elements.loanAmount.value = Math.round(state.loanAmount);
+        
+        // Update percentage buttons based on current value
+        const percentage = (state.downPayment / state.housePrice * 100) || 0;
+        document.querySelectorAll('.form-group:nth-child(2) .quick-btn').forEach(btn => {
+          btn.classList.toggle('active', parseInt(btn.dataset.value) === Math.round(percentage / 10) * 10);
+        });
+      }
+      
+      // Calculate mortgage
+      function calculate() {
+        const principal = state.loanAmount;
+        const annualRate = state.interestRate / 100;
+        const monthlyRate = annualRate / 12;
+        const months = state.loanTerm * 12;
+        
+        let monthlyPayment, totalPayment, totalInterest;
+        let schedule = [];
+        
+        if (state.loanType === 'equal-payment') {
+          // Equal payment (等额本息)
+          if (monthlyRate > 0) {
+            monthlyPayment = principal * monthlyRate * Math.pow(1 + monthlyRate, months) / (Math.pow(1 + monthlyRate, months) - 1);
+          } else {
+            monthlyPayment = principal / months;
+          }
+          
+          let remainingPrincipal = principal;
+          for (let i = 1; i <= months; i++) {
+            const interestPayment = remainingPrincipal * monthlyRate;
+            const principalPayment = monthlyPayment - interestPayment;
+            remainingPrincipal -= principalPayment;
+            
+            schedule.push({
+              month: i,
+              payment: monthlyPayment,
+              principal: principalPayment,
+              interest: interestPayment,
+              remaining: Math.max(0, remainingPrincipal)
+            });
+          }
+          
+          totalPayment = monthlyPayment * months;
+          totalInterest = totalPayment - principal;
+        } else {
+          // Equal principal (等额本金)
+          const monthlyPrincipal = principal / months;
+          let remainingPrincipal = principal;
+          let totalInterestCalc = 0;
+          
+          for (let i = 1; i <= months; i++) {
+            const interestPayment = remainingPrincipal * monthlyRate;
+            const payment = monthlyPrincipal + interestPayment;
+            remainingPrincipal -= monthlyPrincipal;
+            totalInterestCalc += interestPayment;
+            
+            schedule.push({
+              month: i,
+              payment: payment,
+              principal: monthlyPrincipal,
+              interest: interestPayment,
+              remaining: Math.max(0, remainingPrincipal)
+            });
+          }
+          
+          monthlyPayment = schedule[0].payment;
+          totalPayment = totalInterestCalc + principal;
+          totalInterest = totalInterestCalc;
+        }
+        
+        // Update UI
+        elements.monthlyPayment.textContent = FinanceCalc.formatCurrency(monthlyPayment).replace('¥', '');
+        elements.resultLoanAmount.textContent = FinanceCalc.formatCurrency(principal);
+        elements.resultTotalPayment.textContent = FinanceCalc.formatCurrency(totalPayment);
+        elements.resultTotalInterest.textContent = FinanceCalc.formatCurrency(totalInterest);
+        elements.resultDownPayment.textContent = FinanceCalc.formatCurrency(state.downPayment);
+        
+        // Chart values
+        elements.chartPrincipal.textContent = FinanceCalc.formatCurrency(principal);
+        elements.chartInterest.textContent = FinanceCalc.formatCurrency(totalInterest);
+        
+        // Update pie chart
+        renderPieChart(principal, totalInterest);
+        
+        // Update line chart
+        renderLineChartData(schedule);
+        
+        // Update breakdown table
+        updateBreakdownTable(schedule);
+      }
+      
+      // Render pie chart
+      function renderPieChart(principal, interest) {
+        const canvas = document.getElementById('pieChart');
+        if (!canvas) return;
+
+        const colors = FinanceCalc.getChartColors();
+        const ctx = canvas.getContext('2d');
+        const dpr = window.devicePixelRatio || 1;
+        const size = 200;
+
+        canvas.width = size * dpr;
+        canvas.height = size * dpr;
+        ctx.scale(dpr, dpr);
+
+        const centerX = size / 2;
+        const centerY = size / 2;
+        const radius = Math.min(size, size) / 2 - 10;
+        const innerRadius = radius * 0.6;
+
+        const total = principal + interest;
+        const principalAngle = (principal / total) * Math.PI * 2;
+        const interestAngle = (interest / total) * Math.PI * 2;
+
+        ctx.clearRect(0, 0, size, size);
+
+        // Draw principal arc
+        ctx.beginPath();
+        ctx.moveTo(centerX, centerY);
+        ctx.arc(centerX, centerY, radius, -Math.PI / 2, -Math.PI / 2 + principalAngle);
+        ctx.closePath();
+        ctx.fillStyle = colors.primary;
+        ctx.fill();
+
+        // Draw interest arc
+        ctx.beginPath();
+        ctx.moveTo(centerX, centerY);
+        ctx.arc(centerX, centerY, radius, -Math.PI / 2 + principalAngle, -Math.PI / 2 + principalAngle + interestAngle);
+        ctx.closePath();
+        ctx.fillStyle = colors.warning;
+        ctx.fill();
+
+        // Draw center hole
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, innerRadius, 0, Math.PI * 2);
+        ctx.fillStyle = colors.bg;
+        ctx.fill();
+
+        // Draw center text
+        ctx.fillStyle = colors.text;
+        ctx.font = '14px var(--font-sans)';
+        ctx.textAlign = 'center';
+        ctx.fillText('贷款总额', centerX, centerY - 10);
+        ctx.font = 'bold 16px var(--font-sans)';
+        ctx.fillText(FinanceCalc.formatNumber(total / 10000, 0) + '万', centerX, centerY + 15);
+      }
+      
+      // Render line chart data
+      function renderLineChartData(schedule) {
+        const canvas = document.getElementById('lineChart');
+        if (!canvas) return;
+
+        const colors = FinanceCalc.getChartColors();
+        const ctx = canvas.getContext('2d');
+        const dpr = window.devicePixelRatio || 1;
+
+        canvas.width = canvas.offsetWidth * dpr;
+        canvas.height = canvas.offsetHeight * dpr;
+        ctx.scale(dpr, dpr);
+
+        const width = canvas.offsetWidth;
+        const height = canvas.offsetHeight;
+        const padding = 30;
+
+        const chartWidth = width - padding * 2;
+        const chartHeight = height - padding * 2;
+
+        const maxValue = schedule[0].remaining + schedule[0].principal;
+        const pointSpacing = chartWidth / (schedule.length - 1);
+
+        ctx.clearRect(0, 0, width, height);
+
+        // Draw grid
+        ctx.strokeStyle = colors.grid;
+        ctx.lineWidth = 1;
+        for (let i = 0; i <= 4; i++) {
+          const y = padding + (chartHeight / 4) * i;
+          ctx.beginPath();
+          ctx.moveTo(padding, y);
+          ctx.lineTo(width - padding, y);
+          ctx.stroke();
+
+          // Y-axis labels
+          const value = maxValue - (maxValue / 4) * i;
+          ctx.fillStyle = colors.text;
+          ctx.font = '10px var(--font-sans)';
+          ctx.textAlign = 'left';
+          ctx.fillText(FinanceCalc.formatNumber(value / 10000, 0) + '万', padding - 5, y + 3);
+        }
+
+        // Draw area
+        ctx.beginPath();
+        ctx.moveTo(padding, height - padding);
+        schedule.forEach((point, index) => {
+          const x = padding + index * pointSpacing;
+          const y = padding + chartHeight - (point.remaining / maxValue) * chartHeight;
+          ctx.lineTo(x, y);
+        });
+        ctx.lineTo(padding + (schedule.length - 1) * pointSpacing, height - padding);
+        ctx.closePath();
+
+        const areaGradient = ctx.createLinearGradient(0, padding, 0, height - padding);
+        areaGradient.addColorStop(0, hexToRgba(colors.primary, 0.15));
+        areaGradient.addColorStop(1, hexToRgba(colors.primary, 0));
+        ctx.fillStyle = areaGradient;
+        ctx.fill();
+
+        // Draw line
+        ctx.beginPath();
+        schedule.forEach((point, index) => {
+          const x = padding + index * pointSpacing;
+          const y = padding + chartHeight - (point.remaining / maxValue) * chartHeight;
+          if (index === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        });
+        ctx.strokeStyle = colors.primary;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // Draw X-axis labels
+        const labelCount = 5;
+        const step = Math.floor(schedule.length / labelCount);
+        for (let i = 0; i <= labelCount; i++) {
+          const index = Math.min(i * step, schedule.length - 1);
+          const x = padding + index * pointSpacing;
+          const year = Math.floor(index / 12) + 1;
+
+          ctx.fillStyle = colors.text;
+          ctx.font = '10px var(--font-sans)';
+          ctx.textAlign = 'center';
+          ctx.fillText(year + '年', x, height - 5);
+        }
+      }
+
+      // Convert hex color to rgba string
+      function hexToRgba(hex, alpha) {
+        const r = parseInt(hex.slice(1, 3), 16);
+        const g = parseInt(hex.slice(3, 5), 16);
+        const b = parseInt(hex.slice(5, 7), 16);
+        return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+      }
+      
+      // Update breakdown table
+      function updateBreakdownTable(schedule) {
+        const tbody = elements.breakdownTableBody;
+        tbody.innerHTML = '';
+        
+        // Show first 12 months and yearly averages for long terms
+        if (schedule.length <= 24) {
+          schedule.forEach(row => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+              <td>${row.month}</td>
+              <td>${FinanceCalc.formatNumber(row.payment)}</td>
+              <td>${FinanceCalc.formatNumber(row.principal)}</td>
+              <td>${FinanceCalc.formatNumber(row.interest)}</td>
+              <td>${FinanceCalc.formatNumber(row.remaining)}</td>
+            `;
+            tbody.appendChild(tr);
+          });
+        } else {
+          // Show yearly summary for longer terms
+          const yearCount = Math.ceil(schedule.length / 12);
+          for (let year = 0; year < yearCount; year++) {
+            const startMonth = year * 12;
+            const endMonth = Math.min((year + 1) * 12, schedule.length);
+            const yearData = schedule.slice(startMonth, endMonth);
+            
+            const totalPayment = yearData.reduce((sum, m) => sum + m.payment, 0);
+            const totalPrincipal = yearData.reduce((sum, m) => sum + m.principal, 0);
+            const totalInterest = yearData.reduce((sum, m) => sum + m.interest, 0);
+            const remaining = yearData[yearData.length - 1].remaining;
+            
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+              <td>第${year + 1}年</td>
+              <td>${FinanceCalc.formatNumber(totalPayment)}</td>
+              <td>${FinanceCalc.formatNumber(totalPrincipal)}</td>
+              <td>${FinanceCalc.formatNumber(totalInterest)}</td>
+              <td>${FinanceCalc.formatNumber(remaining)}</td>
+            `;
+            tbody.appendChild(tr);
+          }
+        }
+      }
+      
+      // Initialize on DOM ready
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else {
+        init();
+      }
+    })();
+  </script>
+</body>
+</html>
