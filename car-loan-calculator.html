@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>车贷对比计算器 - 3-5种方案同时对比 | FinCalc Pro</title>
+  <meta name="description" content="免费在线车贷对比计算器，可同时比较3-5种车贷方案，自动高亮最佳选择。输入车辆价格、首付比例、利率、期限等参数，快速找出最适合您的车贷方案。">
+  <meta name="keywords" content="车贷计算器,车贷对比,贷款对比,汽车贷款,购车贷款,车贷月供">
+  <meta name="author" content="FinCalc Pro">
+  <meta name="robots" content="index, follow">
+  
+  <link rel="canonical" href="https://financecalchub.com/car-loan-calculator.html">
+  
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://financecalchub.com/car-loan-calculator.html">
+  <meta property="og:title" content="车贷对比计算器 - 3-5种方案同时对比">
+  <meta property="og:description" content="同时比较多种车贷方案，自动高亮最佳选择，省时省心。">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚗</text></svg>">
+  
+  <link rel="stylesheet" href="css/style.css">
+  
+  <!-- Schema.org -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "车贷对比计算器",
+    "description": "同时比较3-5种车贷方案，自动高亮最佳选择",
+    "url": "https://financecalchub.com/car-loan-calculator.html",
+    "applicationCategory": "FinanceApplication",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "CNY"
+    }
+  }
+  </script>
+</head>
+<body>
+  <!-- Header -->
+  <header role="banner">
+    <div class="header-inner">
+      <a href="/" class="logo" aria-label="FinCalc Pro 首页">Fin<span>Calc</span> Pro</a>
+      <nav class="nav-links" aria-label="主导航">
+        <a href="/#calculators">计算工具</a>
+        <a href="/#features">特性</a>
+        <a href="#">文档</a>
+        <button class="theme-toggle" id="themeToggle" aria-label="切换深色/浅色主题" aria-pressed="false">🌙</button>
+      </nav>
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="菜单">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="calculator-page">
+    <div class="container">
+      <!-- Page Header -->
+      <div class="section-header text-left mb-8">
+        <h1>车贷对比计算器</h1>
+        <p>同时比较3-5种车贷方案，自动高亮最佳选择，帮您找到最划算的车贷方案</p>
+      </div>
+      
+      <div class="calculator-layout">
+        <!-- Calculator Form -->
+        <div class="calculator-form-section">
+          <!-- Common Parameters -->
+          <h3 class="mb-6">基础参数</h3>
+          
+          <!-- Vehicle Price -->
+          <div class="form-group">
+            <label class="form-label">车辆价格</label>
+            <div class="form-input-wrapper">
+              <span class="form-input-currency">¥</span>
+              <input type="number" class="form-input" id="vehiclePrice" value="300000" min="0" step="1000">
+            </div>
+            <div class="quick-buttons">
+              <button class="quick-btn" data-value="100000">10万</button>
+              <button class="quick-btn" data-value="200000">20万</button>
+              <button class="quick-btn active" data-value="300000">30万</button>
+              <button class="quick-btn" data-value="500000">50万</button>
+              <button class="quick-btn" data-value="1000000">100万</button>
+            </div>
+          </div>
+
+          <!-- Down Payment Rate -->
+          <div class="form-group">
+            <label class="form-label">首付比例</label>
+            <input type="range" class="form-range" id="downPaymentRate" min="0" max="80" value="30" step="5">
+            <div class="range-value">
+              <span>0%</span>
+              <span>80%</span>
+            </div>
+            <p class="text-center mt-2">首付比例：<span id="downPaymentRateDisplay" class="font-bold text-primary">30%</span></p>
+            <div class="quick-buttons">
+              <button class="quick-btn" data-value="0">0%</button>
+              <button class="quick-btn" data-value="20">20%</button>
+              <button class="quick-btn active" data-value="30">30%</button>
+              <button class="quick-btn" data-value="50">50%</button>
+              <button class="quick-btn" data-value="80">80%</button>
+            </div>
+          </div>
+
+          <!-- Loan Schemes -->
+          <h3 class="mb-6 mt-8">贷款方案对比</h3>
+          <p class="text-muted text-sm mb-4">可同时添加最多5种方案进行对比分析</p>
+          
+          <div id="loanSchemes">
+            <!-- Scheme 1 -->
+            <div class="comparison-scheme" data-scheme="1" style="background: var(--color-bg-secondary); padding: var(--space-5); border-radius: var(--radius-lg); margin-bottom: var(--space-4);">
+              <div class="form-group">
+                <label class="form-label">方案1名称</label>
+                <input type="text" class="form-input" id="schemeName1" value="银行标准贷款" placeholder="方案名称">
+              </div>
+              <div class="form-group">
+                <label class="form-label">年利率 (%)</label>
+                <input type="number" class="form-input" id="schemeRate1" value="4.5" min="0" max="30" step="0.1">
+                <div class="quick-buttons">
+                  <button class="quick-btn scheme-rate" data-value="3.5">3.5%</button>
+                  <button class="quick-btn scheme-rate active" data-value="4.5">4.5%</button>
+                  <button class="quick-btn scheme-rate" data-value="5.5">5.5%</button>
+                  <button class="quick-btn scheme-rate" data-value="7.0">7.0%</button>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">贷款期限</label>
+                <select class="form-input" id="schemeTerm1" style="padding-left: 12px;">
+                  <option value="12">1年 (12个月)</option>
+                  <option value="24">2年 (24个月)</option>
+                  <option value="36" selected>3年 (36个月)</option>
+                  <option value="48">4年 (48个月)</option>
+                  <option value="60">5年 (60个月)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">手续费 (元)</label>
+                <input type="number" class="form-input" id="schemeFee1" value="0" min="0" step="100">
+              </div>
+              <div class="form-group">
+                <label class="form-label">
+                  <input type="checkbox" id="schemeInsurance1" checked style="margin-right: 8px;">
+                  包含保险费用
+                </label>
+                <input type="number" class="form-input" id="schemeInsuranceValue1" value="8000" min="0" step="100" style="padding-left: 12px;">
+              </div>
+            </div>
+
+            <!-- Scheme 2 -->
+            <div class="comparison-scheme" data-scheme="2" style="background: var(--color-bg-secondary); padding: var(--space-5); border-radius: var(--radius-lg); margin-bottom: var(--space-4);">
+              <div class="form-group">
+                <label class="form-label">方案2名称</label>
+                <input type="text" class="form-input" id="schemeName2" value="信用卡分期" placeholder="方案名称">
+              </div>
+              <div class="form-group">
+                <label class="form-label">年利率 (%)</label>
+                <input type="number" class="form-input" id="schemeRate2" value="7.0" min="0" max="30" step="0.1">
+                <div class="quick-buttons">
+                  <button class="quick-btn scheme-rate" data-value="3.5">3.5%</button>
+                  <button class="quick-btn scheme-rate" data-value="4.5">4.5%</button>
+                  <button class="quick-btn scheme-rate" data-value="5.5">5.5%</button>
+                  <button class="quick-btn scheme-rate active" data-value="7.0">7.0%</button>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">贷款期限</label>
+                <select class="form-input" id="schemeTerm2" style="padding-left: 12px;">
+                  <option value="12">1年 (12个月)</option>
+                  <option value="24">2年 (24个月)</option>
+                  <option value="36" selected>3年 (36个月)</option>
+                  <option value="48">4年 (48个月)</option>
+                  <option value="60">5年 (60个月)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">手续费 (元)</label>
+                <input type="number" class="form-input" id="schemeFee2" value="3000" min="0" step="100">
+              </div>
+              <div class="form-group">
+                <label class="form-label">
+                  <input type="checkbox" id="schemeInsurance2" style="margin-right: 8px;">
+                  包含保险费用
+                </label>
+                <input type="number" class="form-input" id="schemeInsuranceValue2" value="0" min="0" step="100" style="padding-left: 12px;">
+              </div>
+            </div>
+
+            <!-- Scheme 3 -->
+            <div class="comparison-scheme" data-scheme="3" style="background: var(--color-bg-secondary); padding: var(--space-5); border-radius: var(--radius-lg); margin-bottom: var(--space-4);">
+              <div class="form-group">
+                <label class="form-label">方案3名称</label>
+                <input type="text" class="form-input" id="schemeName3" value="汽车金融公司" placeholder="方案名称">
+              </div>
+              <div class="form-group">
+                <label class="form-label">年利率 (%)</label>
+                <input type="number" class="form-input" id="schemeRate3" value="5.5" min="0" max="30" step="0.1">
+                <div class="quick-buttons">
+                  <button class="quick-btn scheme-rate" data-value="3.5">3.5%</button>
+                  <button class="quick-btn scheme-rate" data-value="4.5">4.5%</button>
+                  <button class="quick-btn scheme-rate active" data-value="5.5">5.5%</button>
+                  <button class="quick-btn scheme-rate" data-value="7.0">7.0%</button>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">贷款期限</label>
+                <select class="form-input" id="schemeTerm3" style="padding-left: 12px;">
+                  <option value="12">1年 (12个月)</option>
+                  <option value="24">2年 (24个月)</option>
+                  <option value="36" selected>3年 (36个月)</option>
+                  <option value="48">4年 (48个月)</option>
+                  <option value="60">5年 (60个月)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">手续费 (元)</label>
+                <input type="number" class="form-input" id="schemeFee3" value="5000" min="0" step="100">
+              </div>
+              <div class="form-group">
+                <label class="form-label">
+                  <input type="checkbox" id="schemeInsurance3" style="margin-right: 8px;">
+                  包含保险费用
+                </label>
+                <input type="number" class="form-input" id="schemeInsuranceValue3" value="0" min="0" step="100" style="padding-left: 12px;">
+              </div>
+            </div>
+          </div>
+
+          <!-- Add/Remove Scheme Buttons -->
+          <div class="flex gap-4 mt-6">
+            <button class="quick-btn" id="addScheme" style="flex: 1; padding: 12px; background: var(--color-primary-subtle); border: 1px dashed var(--color-primary);">
+              + 添加方案
+            </button>
+            <button class="quick-btn" id="removeScheme" style="flex: 1; padding: 12px; background: var(--color-danger-subtle); border: 1px dashed var(--color-danger); color: var(--color-danger);">
+              - 移除方案
+            </button>
+          </div>
+        </div>
+
+        <!-- Results Section -->
+        <div class="calculator-results-section">
+          <div class="result-card">
+            <div class="result-card-header">
+              <h3 class="result-card-title">方案对比结果</h3>
+            </div>
+            
+            <!-- Summary -->
+            <div class="result-highlight">
+              <div class="result-highlight-value text-success" id="bestScheme">方案1</div>
+              <div class="result-highlight-label">推荐方案 · 总支出最低</div>
+            </div>
+            
+            <div class="result-grid mb-6">
+              <div class="result-item">
+                <div class="result-item-label">首付金额</div>
+                <div class="result-item-value" id="resultDownPayment">90,000.00</div>
+              </div>
+              <div class="result-item">
+                <div class="result-item-label">贷款金额</div>
+                <div class="result-item-value" id="resultLoanAmount">210,000.00</div>
+              </div>
+            </div>
+
+            <!-- Comparison Cards -->
+            <div class="comparison-grid" id="comparisonResults">
+              <!-- Results will be dynamically inserted here -->
+            </div>
+          </div>
+          
+        </div>
+      </div>
+
+      <!-- SEO Content -->
+      <div class="seo-content">
+        <h2>如何使用车贷对比计算器</h2>
+        <p>车贷对比计算器帮助您同时比较多种车贷方案，找到总支出最低、最划算的选择。</p>
+        
+        <h3>输入参数说明</h3>
+        <ul>
+          <li><strong>车辆价格</strong>：您计划购买的车辆总价，包括选装配置</li>
+          <li><strong>首付比例</strong>：首付款占车辆价格的比例，通常建议20%-30%</li>
+          <li><strong>方案名称</strong>：为您的贷款方案起个名字，便于识别</li>
+          <li><strong>年利率</strong>：贷款机构提供的年化利率，注意区分"费率"和"利率"</li>
+          <li><strong>贷款期限</strong>：还款周期，期限越长月供越低但总利息越高</li>
+          <li><strong>手续费</strong>：贷款一次性收取的费用，如担保费、服务费等</li>
+          <li><strong>保险费用</strong>：部分贷款方案要求购买指定保险</li>
+        </ul>
+        
+        <h3>常见车贷方案类型</h3>
+        <ul>
+          <li><strong>银行标准贷款</strong>：利率较低，通常需要良好信用记录</li>
+          <li><strong>信用卡分期</strong>：申请方便，但利率可能较高</li>
+          <li><strong>汽车金融公司</strong>：审批快，但利率通常比银行高</li>
+          <li><strong>厂商金融贴息</strong>：部分品牌提供贴息优惠，利率较低</li>
+          <li><strong>融资租赁</strong>：低首付，但最终所有权归属可能不同</li>
+        </ul>
+        
+        <h3>如何选择最佳方案</h3>
+        <p>选择车贷方案时，不能只看月供高低，还需要综合考虑：</p>
+        <ul>
+          <li><strong>总利息支出</strong>：整个贷款期支付的利息总额</li>
+          <li><strong>总支出</strong>：首付 + 贷款本金 + 利息 + 手续费 + 保险等所有费用</li>
+          <li><strong>月供压力</strong>：确保月供在您的承受范围内</li>
+          <li><strong>提前还款</strong>：是否有提前还款违约金</li>
+          <li><strong>其他条件</strong>：是否需要购买全险、是否捆绑销售等</li>
+        </ul>
+        
+        <h3>注意事项</h3>
+        <ul>
+          <li>计算结果为近似值，实际以银行审批为准</li>
+          <li>部分贷款方案可能有隐藏费用，请仔细阅读合同</li>
+          <li>"0利率"或"0手续费"方案可能只是将费用转嫁到其他项目</li>
+          <li>建议在签订合同前咨询专业人士</li>
+        </ul>
+        
+        <!-- FAQ Section -->
+        <div class="faq-section">
+          <h3>常见问题</h3>
+          
+          <div class="faq-item">
+            <div class="faq-question">银行贷款和汽车金融公司贷款哪个更划算？</div>
+            <div class="faq-answer">
+              通常情况下，银行贷款利率较低，但审批条件较严格，审批时间较长。汽车金融公司审批更快、条件更宽松，但利率可能较高。建议先咨询银行，再与汽车金融公司对比。
+            </div>
+          </div>
+          
+          <div class="faq-item">
+            <div class="faq-question">贷款期限选多久合适？</div>
+            <div class="faq-answer">
+              贷款期限选择取决于您的月供承受能力和总利息考虑。3年期是常见选择，月供和总利息较为平衡。如果月供压力大，可选择5年但注意总利息会增加。
+            </div>
+          </div>
+          
+          <div class="faq-item">
+            <div class="faq-question">什么是"费率"和"利率"的区别？</div>
+            <div class="faq-answer">
+              费率通常指贷款本金的百分比计算的利息，而利率是按剩余本金计算的。费率看起来低，但实际年化利率可能更高。比较时请统一换算成年化利率进行比较。
+            </div>
+          </div>
+          
+          <div class="faq-item">
+            <div class="faq-question">提前还款是否划算？</div>
+            <div class="faq-answer">
+              提前还款可以减少利息支出，但部分贷款有提前还款违约金。建议在签订合同前了解提前还款条款，计算违约金与节省利息之间的差额。
+            </div>
+          </div>
+          
+          <div class="faq-item">
+            <div class="faq-question">0利率贷款是真的吗？</div>
+            <div class="faq-answer">
+              所谓的0利率通常是厂商贴息或促销手段，可能伴随较高手续费或要求购买额外配件/保险。一定要计算总支出，才能判断是否真的划算。
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer role="contentinfo">
+    <div class="container">
+      <p>© 2025 <a href="/">FinCalc Pro</a> — 专业金融计算工具箱 · 仅供参考，不构成投资建议</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script>
+    (function() {
+      // State
+      let schemeCount = 3;
+      const maxSchemes = 5;
+      const minSchemes = 2;
+      
+      // DOM Elements
+      const elements = {
+        vehiclePrice: document.getElementById('vehiclePrice'),
+        downPaymentRate: document.getElementById('downPaymentRate'),
+        downPaymentRateDisplay: document.getElementById('downPaymentRateDisplay'),
+        comparisonResults: document.getElementById('comparisonResults'),
+        resultDownPayment: document.getElementById('resultDownPayment'),
+        resultLoanAmount: document.getElementById('resultLoanAmount'),
+        bestScheme: document.getElementById('bestScheme'),
+        addScheme: document.getElementById('addScheme'),
+        removeScheme: document.getElementById('removeScheme')
+      };
+      
+      // Initialize
+      function init() {
+        bindEvents();
+        calculateAll();
+      }
+      
+      // Bind events
+      function bindEvents() {
+        // Vehicle price
+        elements.vehiclePrice.addEventListener('input', function() {
+          calculateAll();
+        });
+        
+        // Down payment rate
+        elements.downPaymentRate.addEventListener('input', function() {
+          elements.downPaymentRateDisplay.textContent = this.value + '%';
+          updateQuickButtons(this.value);
+          calculateAll();
+        });
+        
+        // Quick buttons for vehicle price
+        document.querySelectorAll('.form-group:first-of-type .quick-btn').forEach(btn => {
+          btn.addEventListener('click', function() {
+            elements.vehiclePrice.value = this.dataset.value;
+            document.querySelectorAll('.form-group:first-of-type .quick-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            calculateAll();
+          });
+        });
+        
+        // Quick buttons for down payment rate
+        document.querySelectorAll('.form-group:nth-of-type(2) .quick-btn').forEach(btn => {
+          btn.addEventListener('click', function() {
+            elements.downPaymentRate.value = this.dataset.value;
+            elements.downPaymentRateDisplay.textContent = this.dataset.value + '%';
+            updateQuickButtons(this.dataset.value);
+            calculateAll();
+          });
+        });
+        
+        // Scheme inputs
+        for (let i = 1; i <= maxSchemes; i++) {
+          const schemeInputs = [
+            document.getElementById('schemeRate' + i),
+            document.getElementById('schemeTerm' + i),
+            document.getElementById('schemeFee' + i),
+            document.getElementById('schemeInsurance' + i),
+            document.getElementById('schemeInsuranceValue' + i)
+          ];
+          
+          schemeInputs.forEach(input => {
+            if (input) {
+              input.addEventListener('input', debounce(calculateAll, 150));
+              if (input.type === 'checkbox') {
+                input.addEventListener('change', calculateAll);
+              }
+            }
+          });
+          
+          // Scheme rate quick buttons
+          document.querySelectorAll(`[data-scheme="${i}"] .scheme-rate`).forEach(btn => {
+            btn.addEventListener('click', function() {
+              const schemeDiv = this.closest('.comparison-scheme');
+              schemeDiv.querySelectorAll('.scheme-rate').forEach(b => b.classList.remove('active'));
+              this.classList.add('active');
+              document.getElementById('schemeRate' + i).value = this.dataset.value;
+              calculateAll();
+            });
+          });
+        }
+        
+        // Add/Remove scheme buttons
+        elements.addScheme.addEventListener('click', addScheme);
+        elements.removeScheme.addEventListener('click', removeScheme);
+      }
+      
+      // Update quick buttons active state
+      function updateQuickButtons(value) {
+        document.querySelectorAll('.form-group:nth-of-type(2) .quick-btn').forEach(btn => {
+          btn.classList.toggle('active', parseInt(btn.dataset.value) === parseInt(value));
+        });
+      }
+      
+      // Add scheme
+      function addScheme() {
+        if (schemeCount >= maxSchemes) return;
+        schemeCount++;
+        
+        const schemesContainer = document.getElementById('loanSchemes');
+        const newScheme = createSchemeElement(schemeCount);
+        schemesContainer.appendChild(newScheme);
+        
+        // Bind events for new scheme
+        bindNewSchemeEvents(schemeCount);
+        
+        // Hide add button if max
+        if (schemeCount >= maxSchemes) {
+          elements.addScheme.style.display = 'none';
+        }
+        
+        // Show remove button
+        elements.removeScheme.style.display = 'block';
+        
+        calculateAll();
+      }
+      
+      // Remove scheme
+      function removeScheme() {
+        if (schemeCount <= minSchemes) return;
+        
+        const schemeToRemove = document.querySelector(`[data-scheme="${schemeCount}"]`);
+        if (schemeToRemove) {
+          schemeToRemove.remove();
+        }
+        
+        schemeCount--;
+        
+        // Hide remove button if min
+        if (schemeCount <= minSchemes) {
+          elements.removeScheme.style.display = 'none';
+        }
+        
+        // Show add button
+        elements.addScheme.style.display = 'block';
+        
+        calculateAll();
+      }
+      
+      // Create scheme HTML
+      function createSchemeElement(num) {
+        const div = document.createElement('div');
+        div.className = 'comparison-scheme';
+        div.dataset.scheme = num;
+        div.style = 'background: var(--color-bg-secondary); padding: var(--space-5); border-radius: var(--radius-lg); margin-bottom: var(--space-4);';
+        div.innerHTML = `
+          <div class="form-group">
+            <label class="form-label">方案${num}名称</label>
+            <input type="text" class="form-input" id="schemeName${num}" value="方案${num}" placeholder="方案名称">
+          </div>
+          <div class="form-group">
+            <label class="form-label">年利率 (%)</label>
+            <input type="number" class="form-input" id="schemeRate${num}" value="4.5" min="0" max="30" step="0.1">
+            <div class="quick-buttons">
+              <button class="quick-btn scheme-rate" data-value="3.5">3.5%</button>
+              <button class="quick-btn scheme-rate active" data-value="4.5">4.5%</button>
+              <button class="quick-btn scheme-rate" data-value="5.5">5.5%</button>
+              <button class="quick-btn scheme-rate" data-value="7.0">7.0%</button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">贷款期限</label>
+            <select class="form-input" id="schemeTerm${num}" style="padding-left: 12px;">
+              <option value="12">1年 (12个月)</option>
+              <option value="24">2年 (24个月)</option>
+              <option value="36" selected>3年 (36个月)</option>
+              <option value="48">4年 (48个月)</option>
+              <option value="60">5年 (60个月)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">手续费 (元)</label>
+            <input type="number" class="form-input" id="schemeFee${num}" value="0" min="0" step="100">
+          </div>
+          <div class="form-group">
+            <label class="form-label">
+              <input type="checkbox" id="schemeInsurance${num}" style="margin-right: 8px;">
+              包含保险费用
+            </label>
+            <input type="number" class="form-input" id="schemeInsuranceValue${num}" value="0" min="0" step="100" style="padding-left: 12px;">
+          </div>
+        `;
+        return div;
+      }
+      
+      // Bind events for new scheme
+      function bindNewSchemeEvents(num) {
+        const schemeDiv = document.querySelector(`[data-scheme="${num}"]`);
+        
+        // Rate input
+        document.getElementById('schemeRate' + num).addEventListener('input', debounce(calculateAll, 150));
+        
+        // Term select
+        document.getElementById('schemeTerm' + num).addEventListener('change', calculateAll);
+        
+        // Fee input
+        document.getElementById('schemeFee' + num).addEventListener('input', debounce(calculateAll, 150));
+        
+        // Insurance checkbox
+        document.getElementById('schemeInsurance' + num).addEventListener('change', calculateAll);
+        
+        // Insurance value input
+        document.getElementById('schemeInsuranceValue' + num).addEventListener('input', debounce(calculateAll, 150));
+        
+        // Rate quick buttons
+        schemeDiv.querySelectorAll('.scheme-rate').forEach(btn => {
+          btn.addEventListener('click', function() {
+            schemeDiv.querySelectorAll('.scheme-rate').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            document.getElementById('schemeRate' + num).value = this.dataset.value;
+            calculateAll();
+          });
+        });
+      }
+      
+      // Debounce helper
+      function debounce(func, wait) {
+        let timeout;
+        return function(...args) {
+          clearTimeout(timeout);
+          timeout = setTimeout(() => func.apply(this, args), wait);
+        };
+      }
+      
+      // Calculate all schemes
+      function calculateAll() {
+        const vehiclePrice = parseFloat(elements.vehiclePrice.value) || 0;
+        const downPaymentRate = parseFloat(elements.downPaymentRate.value) / 100;
+        const downPayment = vehiclePrice * downPaymentRate;
+        const loanAmount = vehiclePrice - downPayment;
+        
+        // Update common results
+        elements.resultDownPayment.textContent = FinanceCalc.formatCurrency(downPayment);
+        elements.resultLoanAmount.textContent = FinanceCalc.formatCurrency(loanAmount);
+        
+        const results = [];
+        
+        // Calculate each scheme
+        for (let i = 1; i <= schemeCount; i++) {
+          const rate = parseFloat(document.getElementById('schemeRate' + i)?.value) || 0;
+          const term = parseInt(document.getElementById('schemeTerm' + i)?.value) || 12;
+          const fee = parseFloat(document.getElementById('schemeFee' + i)?.value) || 0;
+          const includeInsurance = document.getElementById('schemeInsurance' + i)?.checked || false;
+          const insuranceValue = includeInsurance ? (parseFloat(document.getElementById('schemeInsuranceValue' + i)?.value) || 0) : 0;
+          const name = document.getElementById('schemeName' + i)?.value || '方案' + i;
+          
+          // Calculate monthly payment using equal payment formula
+          const monthlyRate = rate / 100 / 12;
+          let monthlyPayment;
+          
+          if (monthlyRate > 0) {
+            monthlyPayment = loanAmount * monthlyRate * Math.pow(1 + monthlyRate, term) / (Math.pow(1 + monthlyRate, term) - 1);
+          } else {
+            monthlyPayment = loanAmount / term;
+          }
+          
+          const totalPayment = monthlyPayment * term;
+          const totalInterest = totalPayment - loanAmount;
+          const totalCost = downPayment + totalPayment + fee + insuranceValue;
+          
+          results.push({
+            name: name,
+            monthlyPayment: monthlyPayment,
+            totalInterest: totalInterest,
+            totalCost: totalCost,
+            index: i
+          });
+        }
+        
+        // Find best scheme (lowest total cost)
+        const best = results.reduce((min, r) => r.totalCost < min.totalCost ? r : min, results[0]);
+        const bestName = document.getElementById('schemeName' + best.index)?.value || '方案' + best.index;
+        elements.bestScheme.textContent = bestName;
+        
+        // Render comparison cards
+        renderComparisonCards(results, best);
+      }
+      
+      // Render comparison cards
+      function renderComparisonCards(results, best) {
+        const container = elements.comparisonResults;
+        container.innerHTML = '';
+        
+        results.forEach(result => {
+          const isBest = result.index === best.index;
+          const savings = best.totalCost !== result.totalCost ? result.totalCost - best.totalCost : 0;
+          
+          const card = document.createElement('div');
+          card.className = 'comparison-card' + (isBest ? ' best' : '');
+          card.innerHTML = `
+            <div class="comparison-card-header">
+              <span class="font-semibold">${result.name}</span>
+              ${isBest ? '<span class="comparison-badge">推荐</span>' : ''}
+            </div>
+            <div class="result-grid" style="gap: var(--space-3);">
+              <div class="result-item">
+                <div class="result-item-label">月供</div>
+                <div class="result-item-value">${FinanceCalc.formatNumber(result.monthlyPayment)}</div>
+              </div>
+              <div class="result-item">
+                <div class="result-item-label">总利息</div>
+                <div class="result-item-value text-warning">${FinanceCalc.formatNumber(result.totalInterest)}</div>
+              </div>
+              <div class="result-item" style="grid-column: span 2;">
+                <div class="result-item-label">总支出</div>
+                <div class="result-item-value ${isBest ? 'text-success' : ''}">${FinanceCalc.formatCurrency(result.totalCost)}</div>
+              </div>
+              ${savings > 0 ? `
+              <div class="result-item" style="grid-column: span 2; background: var(--color-success-subtle);">
+                <div class="result-item-label">比最佳方案多花</div>
+                <div class="result-item-value text-danger">${FinanceCalc.formatCurrency(savings)}</div>
+              </div>
+              ` : ''}
+            </div>
+          `;
+          container.appendChild(card);
+        });
+      }
+      
+      // Initialize on DOM ready
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else {
+        init();
+      }
+    })();
+  </script>
+</body>
+</html>
