@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>定投收益计算器 - 基金定投收益计算 | FinCalc Pro</title>
+  <meta name="description" content="免费在线定投收益计算器，计算定期定额投资的最终资产、总收益和收益率。支持每周、每月、每季度定投周期，查看收益增长趋势图。">
+  <meta name="keywords" content="定投计算器,基金定投,定投收益,定期投资,SIP计算器,平均成本法">
+  <meta name="author" content="FinCalc Pro">
+  <meta name="robots" content="index, follow">
+  
+  <link rel="canonical" href="https://financecalchub.com/sip-calculator.html">
+  
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://financecalchub.com/sip-calculator.html">
+  <meta property="og:title" content="定投收益计算器">
+  <meta property="og:description" content="计算基金定投等定期投资的收益，支持多周期。">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎯</text></svg>">
+  
+  <link rel="stylesheet" href="css/style.css">
+  
+  <!-- Schema.org -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "定投收益计算器",
+    "description": "计算定期定额投资的最终资产和收益",
+    "url": "https://financecalchub.com/sip-calculator.html",
+    "applicationCategory": "FinanceApplication",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "CNY" }
+  }
+  </script>
+</head>
+<body>
+  <!-- Header -->
+  <header role="banner">
+    <div class="header-inner">
+      <a href="/" class="logo" aria-label="FinCalc Pro 首页">Fin<span>Calc</span> Pro</a>
+      <nav class="nav-links" aria-label="主导航">
+        <a href="/#calculators">计算工具</a>
+        <a href="/#features">特性</a>
+        <a href="#">文档</a>
+        <button class="theme-toggle" id="themeToggle" aria-label="切换深色/浅色主题" aria-pressed="false">🌙</button>
+      </nav>
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="菜单">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="calculator-page">
+    <div class="container">
+      <div class="section-header text-left mb-8">
+        <h1>定投收益计算器</h1>
+        <p>计算定期定额投资的最终资产、总收益和收益率，支持周/月/季度周期</p>
+      </div>
+      
+      <div class="calculator-layout">
+        <!-- Calculator Form -->
+        <div class="calculator-form-section">
+          <!-- Initial Investment -->
+          <div class="form-group">
+            <label class="form-label">初始本金 (首次投入)</label>
+            <div class="form-input-wrapper">
+              <span class="form-input-currency">¥</span>
+              <input type="number" class="form-input" id="initialInvestment" value="10000" min="0" step="1000">
+            </div>
+            <div class="quick-buttons">
+              <button class="quick-btn" data-value="0">0</button>
+              <button class="quick-btn" data-value="10000">1万</button>
+              <button class="quick-btn active" data-value="10000">1万</button>
+              <button class="quick-btn" data-value="50000">5万</button>
+              <button class="quick-btn" data-value="100000">10万</button>
+            </div>
+          </div>
+
+          <!-- Monthly Investment -->
+          <div class="form-group">
+            <label class="form-label">每月定投金额</label>
+            <div class="form-input-wrapper">
+              <span class="form-input-currency">¥</span>
+              <input type="number" class="form-input" id="monthlyInvestment" value="2000" min="0" step="100">
+            </div>
+            <div class="quick-buttons">
+              <button class="quick-btn" data-value="500">500</button>
+              <button class="quick-btn" data-value="1000">1000</button>
+              <button class="quick-btn active" data-value="2000">2000</button>
+              <button class="quick-btn" data-value="5000">5000</button>
+              <button class="quick-btn" data-value="10000">1万</button>
+            </div>
+          </div>
+
+          <!-- Investment Period -->
+          <div class="form-group">
+            <label class="form-label">投资年限</label>
+            <input type="range" class="form-range" id="investmentYears" min="1" max="40" value="10" step="1">
+            <div class="range-value">
+              <span>1年</span>
+              <span>40年</span>
+            </div>
+            <p class="text-center mt-2">投资期限：<span id="yearsDisplay" class="font-bold text-primary">10年</span></p>
+            <div class="quick-buttons">
+              <button class="quick-btn" data-value="3">3年</button>
+              <button class="quick-btn" data-value="5">5年</button>
+              <button class="quick-btn active" data-value="10">10年</button>
+              <button class="quick-btn" data-value="20">20年</button>
+              <button class="quick-btn" data-value="30">30年</button>
+            </div>
+          </div>
+
+          <!-- Expected Annual Return -->
+          <div class="form-group">
+            <label class="form-label">年化收益率</label>
+            <div class="form-input-wrapper">
+              <input type="number" class="form-input" id="annualReturn" value="8.0" min="0" max="50" step="0.1" style="padding-right: 50px;">
+              <span class="form-input-suffix">%</span>
+            </div>
+            <div class="quick-buttons">
+              <button class="quick-btn" data-value="4">4%</button>
+              <button class="quick-btn" data-value="6">6%</button>
+              <button class="quick-btn active" data-value="8">8%</button>
+              <button class="quick-btn" data-value="10">10%</button>
+              <button class="quick-btn" data-value="12">12%</button>
+              <button class="quick-btn" data-value="15">15%</button>
+            </div>
+          </div>
+
+          <!-- SIP Frequency -->
+          <div class="form-group">
+            <label class="form-label">定投周期</label>
+            <div class="form-tabs">
+              <button class="form-tab" data-frequency="4">每周</button>
+              <button class="form-tab active" data-frequency="1">每月</button>
+              <button class="form-tab" data-frequency="0.25">每季度</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Results Section -->
+        <div class="calculator-results-section">
+          <div class="result-card">
+            <div class="result-card-header">
+              <h3 class="result-card-title">定投计算结果</h3>
+              <span id="resultFrequency" class="text-muted text-sm">按月定投</span>
+            </div>
+            
+            <!-- Main Result -->
+            <div class="result-highlight">
+              <div class="result-highlight-value" id="finalAsset">397,268.91</div>
+              <div class="result-highlight-label">最终资产</div>
+            </div>
+            
+            <div class="result-grid">
+              <div class="result-item">
+                <div class="result-item-label">总投入</div>
+                <div class="result-item-value" id="resultTotalInvested">250,000.00</div>
+              </div>
+              <div class="result-item">
+                <div class="result-item-label">总收益</div>
+                <div class="result-item-value text-success" id="resultTotalReturn">147,268.91</div>
+              </div>
+              <div class="result-item">
+                <div class="result-item-label">收益占比</div>
+                <div class="result-item-value text-primary" id="resultReturnPercent">58.91%</div>
+              </div>
+              <div class="result-item">
+                <div class="result-item-label">年化收益</div>
+                <div class="result-item-value text-primary" id="resultActualReturn">8.00%</div>
+              </div>
+            </div>
+            
+            <!-- Growth Chart -->
+            <div class="chart-container">
+              <div class="chart-title">收益增长趋势</div>
+              <canvas id="lineChart" width="400" height="200" style="max-width: 100%;"></canvas>
+              <div class="result-grid mt-4">
+                <div class="result-item" style="background: var(--color-primary-subtle);">
+                  <div class="result-item-label">已投入本金</div>
+                  <div class="result-item-value text-primary" id="chartInvested">250,000</div>
+                </div>
+                <div class="result-item" style="background: var(--color-success-subtle);">
+                  <div class="result-item-label">收益金额</div>
+                  <div class="result-item-value text-success" id="chartReturn">147,269</div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Breakdown Table -->
+            <div class="result-breakdown">
+              <div class="result-breakdown-title">
+                <span>年度收益明细</span>
+                <button class="toggle-btn" id="toggleBreakdown">
+                  展开
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="6,9 12,15 18,9"></polyline>
+                  </svg>
+                </button>
+              </div>
+              <div id="breakdownContent" class="hidden">
+                <table class="result-table">
+                  <thead>
+                    <tr>
+                      <th>年份</th>
+                      <th>年初资产</th>
+                      <th>全年投入</th>
+                      <th>收益</th>
+                      <th>年末资产</th>
+                    </tr>
+                  </thead>
+                  <tbody id="breakdownTableBody">
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+
+      <!-- SEO Content -->
+      <div class="seo-content">
+        <h2>关于定投收益计算器</h2>
+        <p>定投收益计算器帮助您计算定期定额投资的最终资产和收益。基金定投是一种通过定期投入资金、平摊投资成本的策略，特别适合长期投资。</p>
+        
+        <h3>什么是定投？</h3>
+        <p>定投（Systematic Investment Plan，简称SIP）是指每隔固定时间投入固定金额到某种投资产品中的策略。这种方法可以有效降低择时风险，实现"平均成本法"效应。</p>
+        
+        <h3>定投的优势</h3>
+        <ul>
+          <li><strong>平摊成本</strong>：市场高点买入少，低点买入多，长期平均成本较低</li>
+          <li><strong>省时省力</strong>：设置自动扣款，无需关注短期市场波动</li>
+          <li><strong>分散风险</strong>：避免一次性投入选错时机</li>
+          <li><strong>复利效应</strong>：长期持有，收益再投资</li>
+        </ul>
+        
+        <h3>定投计算公式</h3>
+        <p>定投使用 Future Value of Annuity formula（年金终值公式）：</p>
+        <p><strong>FV = P × [(1 + r)^n - 1] / r + I × (1 + r)^n</strong></p>
+        <ul>
+          <li>FV：最终资产</li>
+          <li>P：每期投入金额</li>
+          <li>r：每期收益率</li>
+          <li>n：总期数</li>
+          <li>I：初始投资金额</li>
+        </ul>
+        
+        <h3>定投周期选择</h3>
+        <ul>
+          <li><strong>周投</strong>：投入更频繁，成本更平滑</li>
+          <li><strong>月投</strong>：最常见方式，与工资周期匹配</li>
+          <li><strong>季投</strong>：适合大额定期投资</li>
+        </ul>
+        
+        <!-- FAQ Section -->
+        <div class="faq-section">
+          <h3>常见问题</h3>
+          
+          <div class="faq-item">
+            <div class="faq-question">定投和一次性投资哪个更好？</div>
+            <div class="faq-answer">
+              两种方式各有优势。一次性投资在市场低点时收益更高，但风险也更大。定投通过分批投入降低择时风险，适合大多数普通投资者。建议有稳定收入的投资者采用定投方式。
+            </div>
+          </div>
+          
+          <div class="faq-item">
+            <div class="faq-question">定投应该选择什么产品？</div>
+            <div class="faq-answer">
+              常见的定投产品包括：指数基金（如沪深300、标普500）、股票型基金、混合型基金等。建议选择费率低、跟踪误差小的指数基金，适合长期定投。
+            </div>
+          </div>
+          
+          <div class="faq-item">
+            <div class="faq-question">定投收益率多少合适？</div>
+            <div class="faq-answer">
+              长期来看，股票型基金的历史年化收益率大约在8%-12%。指数基金如沪深300长期年化约8%-10%。债券基金约4%-6%。建议根据风险承受能力选择合适的投资品种。
+            </div>
+          </div>
+          
+          <div class="faq-item">
+            <div class="faq-question">定投需要坚持多久？</div>
+            <div class="faq-answer">
+              定投需要长期坚持才能发挥效果。一般来说，至少坚持3-5年才能看到明显效果。股市周期性波动，通常一个完整牛熊周期约5-7年。建议用闲置资金进行定投。
+            </div>
+          </div>
+          
+          <div class="faq-item">
+            <div class="faq-question">定投中途需要止损吗？</div>
+            <div class="faq-answer">
+              定投的核心是坚持定投、平摊成本。短期亏损反而是积累筹码的机会，不建议止损。但如果投资逻辑发生根本变化（如基金清盘），可以考虑退出。
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer role="contentinfo">
+    <div class="container">
+      <p>© 2025 <a href="/">FinCalc Pro</a> — 专业金融计算工具箱 · 仅供参考，不构成投资建议</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script>
+    (function() {
+      // State
+      let state = {
+        initialInvestment: 10000,
+        monthlyInvestment: 2000,
+        investmentYears: 10,
+        annualReturn: 8.0,
+        frequency: 1  // 1 = monthly, 4 = weekly, 0.25 = quarterly
+      };
+      
+      const frequencyLabels = {
+        4: '按周定投',
+        1: '按月定投',
+        0.25: '按季度定投'
+      };
+      
+      const frequencyTexts = {
+        4: { singular: '周', plural: '周' },
+        1: { singular: '月', plural: '月' },
+        0.25: { singular: '季度', plural: '季度' }
+      };
+      
+      // DOM Elements
+      const elements = {
+        initialInvestment: document.getElementById('initialInvestment'),
+        monthlyInvestment: document.getElementById('monthlyInvestment'),
+        investmentYears: document.getElementById('investmentYears'),
+        yearsDisplay: document.getElementById('yearsDisplay'),
+        annualReturn: document.getElementById('annualReturn'),
+        resultFrequency: document.getElementById('resultFrequency'),
+        finalAsset: document.getElementById('finalAsset'),
+        resultTotalInvested: document.getElementById('resultTotalInvested'),
+        resultTotalReturn: document.getElementById('resultTotalReturn'),
+        resultReturnPercent: document.getElementById('resultReturnPercent'),
+        resultActualReturn: document.getElementById('resultActualReturn'),
+        chartInvested: document.getElementById('chartInvested'),
+        chartReturn: document.getElementById('chartReturn'),
+        breakdownTableBody: document.getElementById('breakdownTableBody'),
+        toggleBreakdown: document.getElementById('toggleBreakdown'),
+        breakdownContent: document.getElementById('breakdownContent')
+      };
+      
+      function init() {
+        bindEvents();
+        calculate();
+        FinanceCalc.onThemeChange(() => calculate());
+      }
+      
+      function bindEvents() {
+        elements.initialInvestment.addEventListener('input', function() {
+          state.initialInvestment = parseFloat(this.value) || 0;
+          calculate();
+        });
+        
+        elements.monthlyInvestment.addEventListener('input', function() {
+          state.monthlyInvestment = parseFloat(this.value) || 0;
+          calculate();
+        });
+        
+        elements.investmentYears.addEventListener('input', function() {
+          state.investmentYears = parseInt(this.value) || 1;
+          elements.yearsDisplay.textContent = state.investmentYears + '年';
+          calculate();
+        });
+        
+        elements.annualReturn.addEventListener('input', function() {
+          state.annualReturn = parseFloat(this.value) || 0;
+          calculate();
+        });
+        
+        // Frequency tabs
+        document.querySelectorAll('.form-tab[data-frequency]').forEach(tab => {
+          tab.addEventListener('click', function() {
+            document.querySelectorAll('.form-tab[data-frequency]').forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+            state.frequency = parseFloat(this.dataset.frequency);
+            elements.resultFrequency.textContent = frequencyLabels[state.frequency];
+            calculate();
+          });
+        });
+        
+        // Quick buttons for initial investment
+        document.querySelectorAll('.form-group:nth-of-type(1) .quick-btn').forEach(btn => {
+          btn.addEventListener('click', function() {
+            elements.initialInvestment.value = this.dataset.value;
+            state.initialInvestment = parseFloat(this.dataset.value);
+            calculate();
+          });
+        });
+        
+        // Quick buttons for monthly investment
+        document.querySelectorAll('.form-group:nth-of-type(2) .quick-btn').forEach(btn => {
+          btn.addEventListener('click', function() {
+            elements.monthlyInvestment.value = this.dataset.value;
+            state.monthlyInvestment = parseFloat(this.dataset.value);
+            calculate();
+          });
+        });
+        
+        // Quick buttons for years
+        document.querySelectorAll('.form-group:nth-of-type(3) .quick-btn').forEach(btn => {
+          btn.addEventListener('click', function() {
+            elements.investmentYears.value = this.dataset.value;
+            state.investmentYears = parseInt(this.dataset.value);
+            elements.yearsDisplay.textContent = state.investmentYears + '年';
+            calculate();
+          });
+        });
+        
+        // Quick buttons for return rate
+        document.querySelectorAll('.form-group:nth-of-type(4) .quick-btn').forEach(btn => {
+          btn.addEventListener('click', function() {
+            elements.annualReturn.value = this.dataset.value;
+            state.annualReturn = parseFloat(this.dataset.value);
+            calculate();
+          });
+        });
+        
+        // Toggle breakdown
+        elements.toggleBreakdown.addEventListener('click', function() {
+          const isHidden = elements.breakdownContent.classList.contains('hidden');
+          elements.breakdownContent.classList.toggle('hidden');
+          this.innerHTML = isHidden ? 
+            '收起 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18,15 12,9 6,15"></polyline></svg>' :
+            '展开 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6,9 12,15 18,9"></polyline></svg>';
+        });
+      }
+      
+      function calculate() {
+        const { initialInvestment, monthlyInvestment, investmentYears, annualReturn, frequency } = state;
+        
+        // Calculate total periods based on frequency
+        // If monthly (frequency=1), periodsPerYear = 12
+        // If weekly (frequency=4), periodsPerYear = 52
+        // If quarterly (frequency=0.25), periodsPerYear = 4
+        const periodsPerYear = frequency === 1 ? 12 : (frequency === 4 ? 52 : 4);
+        const periodRate = (annualReturn / 100) / periodsPerYear;
+        const totalPeriods = Math.round(periodsPerYear * investmentYears);
+        
+        // Calculate future value of annuity (regular payments)
+        // FV = P * [(1 + r)^n - 1] / r
+        let sipFutureValue = 0;
+        if (periodRate > 0) {
+          sipFutureValue = monthlyInvestment * ((Math.pow(1 + periodRate, totalPeriods) - 1) / periodRate);
+        } else {
+          sipFutureValue = monthlyInvestment * totalPeriods;
+        }
+        
+        // Calculate initial investment growth
+        const initialFutureValue = initialInvestment * Math.pow(1 + periodRate, totalPeriods);
+        
+        // Total final asset
+        const finalAsset = initialFutureValue + sipFutureValue;
+        
+        // Total invested
+        const totalInvested = initialInvestment + (monthlyInvestment * totalPeriods);
+        
+        // Total return
+        const totalReturn = finalAsset - totalInvested;
+        
+        // Return percentage
+        const returnPercent = (totalReturn / totalInvested) * 100;
+        
+        // Update UI
+        elements.finalAsset.textContent = FinanceCalc.formatCurrency(finalAsset).replace('¥', '');
+        elements.resultTotalInvested.textContent = FinanceCalc.formatCurrency(totalInvested);
+        elements.resultTotalReturn.textContent = FinanceCalc.formatCurrency(totalReturn);
+        elements.resultReturnPercent.textContent = returnPercent.toFixed(2) + '%';
+        elements.resultActualReturn.textContent = annualReturn.toFixed(2) + '%';
+        
+        elements.chartInvested.textContent = FinanceCalc.formatNumber(totalInvested / 10000, 0) + '万';
+        elements.chartReturn.textContent = FinanceCalc.formatNumber(totalReturn / 10000, 0) + '万';
+        
+        // Generate yearly breakdown
+        generateYearlyBreakdown(initialInvestment, monthlyInvestment, annualReturn, periodsPerYear, investmentYears);
+        
+        // Render chart
+        renderGrowthChart(initialInvestment, monthlyInvestment, annualReturn, periodsPerYear, investmentYears, totalInvested);
+      }
+      
+      function generateYearlyBreakdown(initialInvestment, monthlyInvestment, annualReturn, periodsPerYear, years) {
+        const tbody = elements.breakdownTableBody;
+        tbody.innerHTML = '';
+        
+        const periodRate = (annualReturn / 100) / periodsPerYear;
+        const contributionsPerYear = monthlyInvestment * periodsPerYear / (12 / (12 / periodsPerYear));
+        // For monthly: contributionsPerYear = monthlyInvestment * 12
+        // For quarterly: contributionsPerYear = monthlyInvestment * 4
+        // For weekly: contributionsPerYear = monthlyInvestment * 52
+        
+        let currentAsset = initialInvestment;
+        const periodsPerYearAdjusted = periodsPerYear;
+        
+        for (let year = 1; year <= years; year++) {
+          const startAsset = currentAsset;
+          
+          // Calculate asset at end of year
+          let yearEndAsset = startAsset;
+          for (let p = 0; p < periodsPerYearAdjusted; p++) {
+            yearEndAsset = yearEndAsset * (1 + periodRate) + monthlyInvestment;
+          }
+          
+          const yearContribution = periodsPerYearAdjusted === 52 ? monthlyInvestment * 52 : 
+                                   (periodsPerYearAdjusted === 12 ? monthlyInvestment * 12 : monthlyInvestment * 4);
+          const yearReturn = yearEndAsset - startAsset - yearContribution;
+          
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>第${year}年</td>
+            <td>${FinanceCalc.formatCurrency(startAsset)}</td>
+            <td>${FinanceCalc.formatCurrency(yearContribution)}</td>
+            <td>${FinanceCalc.formatCurrency(yearReturn)}</td>
+            <td>${FinanceCalc.formatCurrency(yearEndAsset)}</td>
+          `;
+          tbody.appendChild(tr);
+          
+          currentAsset = yearEndAsset;
+        }
+      }
+      
+      function renderGrowthChart(initialInvestment, monthlyInvestment, annualReturn, periodsPerYear, years, totalInvested) {
+        const canvas = document.getElementById('lineChart');
+        if (!canvas) return;
+
+        const colors = FinanceCalc.getChartColors();
+        const ctx = canvas.getContext('2d');
+        const dpr = window.devicePixelRatio || 1;
+
+        canvas.width = canvas.offsetWidth * dpr;
+        canvas.height = canvas.offsetHeight * dpr;
+        ctx.scale(dpr, dpr);
+
+        const width = canvas.offsetWidth;
+        const height = canvas.offsetHeight;
+        const padding = 40;
+
+        const chartWidth = width - padding * 2;
+        const chartHeight = height - padding * 2;
+
+        const periodRate = (annualReturn / 100) / periodsPerYear;
+
+        const dataPoints = [{ year: 0, invested: initialInvestment, asset: initialInvestment }];
+
+        let currentAsset = initialInvestment;
+        let totalContributed = initialInvestment;
+
+        for (let year = 1; year <= years; year++) {
+          for (let p = 0; p < periodsPerYear; p++) {
+            currentAsset = currentAsset * (1 + periodRate) + monthlyInvestment;
+          }
+          totalContributed = initialInvestment + monthlyInvestment * periodsPerYear * year;
+          dataPoints.push({ year, invested: totalContributed, asset: currentAsset });
+        }
+
+        const maxValue = dataPoints[dataPoints.length - 1].asset;
+
+        ctx.clearRect(0, 0, width, height);
+
+        // Draw grid
+        ctx.strokeStyle = colors.grid;
+        ctx.lineWidth = 1;
+        for (let i = 0; i <= 4; i++) {
+          const y = padding + (chartHeight / 4) * i;
+          ctx.beginPath();
+          ctx.moveTo(padding, y);
+          ctx.lineTo(width - padding, y);
+          ctx.stroke();
+
+          const value = maxValue - (maxValue / 4) * i;
+          ctx.fillStyle = colors.text;
+          ctx.font = '10px var(--font-sans)';
+          ctx.textAlign = 'left';
+          ctx.fillText(FinanceCalc.formatNumber(value / 10000, 0) + '万', padding - 5, y + 3);
+        }
+
+        // Draw invested line (dashed)
+        ctx.beginPath();
+        ctx.setLineDash([5, 5]);
+        dataPoints.forEach((point, index) => {
+          const x = padding + (index / years) * chartWidth;
+          const y = padding + chartHeight - (point.invested / maxValue) * chartHeight;
+          if (index === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        });
+        ctx.strokeStyle = colors.text;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Draw asset area
+        ctx.beginPath();
+        ctx.moveTo(padding, height - padding);
+        dataPoints.forEach((point, index) => {
+          const x = padding + (index / years) * chartWidth;
+          const y = padding + chartHeight - (point.asset / maxValue) * chartHeight;
+          ctx.lineTo(x, y);
+        });
+        ctx.lineTo(padding + chartWidth, height - padding);
+        ctx.closePath();
+
+        const gradient = ctx.createLinearGradient(0, padding, 0, height - padding);
+        gradient.addColorStop(0, hexToRgba(colors.success, 0.25));
+        gradient.addColorStop(1, hexToRgba(colors.success, 0));
+        ctx.fillStyle = gradient;
+        ctx.fill();
+
+        // Draw asset line
+        ctx.beginPath();
+        dataPoints.forEach((point, index) => {
+          const x = padding + (index / years) * chartWidth;
+          const y = padding + chartHeight - (point.asset / maxValue) * chartHeight;
+          if (index === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        });
+        ctx.strokeStyle = colors.success;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // Legend
+        ctx.fillStyle = colors.success;
+        ctx.fillRect(width - padding - 100, padding - 20, 12, 12);
+        ctx.fillStyle = colors.text;
+        ctx.font = '10px var(--font-sans)';
+        ctx.fillText('资产', width - padding - 85, padding - 10);
+
+        ctx.setLineDash([5, 5]);
+        ctx.strokeStyle = colors.text;
+        ctx.strokeRect(width - padding - 100, padding + 2, 12, 12);
+        ctx.setLineDash([]);
+        ctx.fillStyle = colors.text;
+        ctx.fillText('已投入', width - padding - 85, padding + 12);
+
+        // X-axis labels
+        for (let i = 0; i <= years; i += Math.max(1, Math.floor(years / 5))) {
+          const x = padding + (i / years) * chartWidth;
+          ctx.fillStyle = colors.text;
+          ctx.font = '10px var(--font-sans)';
+          ctx.textAlign = 'center';
+          ctx.fillText(i + '年', x, height - 10);
+        }
+      }
+
+      // Convert hex color to rgba string
+      function hexToRgba(hex, alpha) {
+        const r = parseInt(hex.slice(1, 3), 16);
+        const g = parseInt(hex.slice(3, 5), 16);
+        const b = parseInt(hex.slice(5, 7), 16);
+        return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+      }
+      
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else {
+        init();
+      }
+    })();
+  </script>
+</body>
+</html>
