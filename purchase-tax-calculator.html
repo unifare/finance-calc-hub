@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>汽车购置税计算器 - 购车税费明细计算 | FinCalc Pro</title>
+  <meta name="description" content="免费在线汽车购置税计算器，根据裸车价格计算车辆购置税、车船税、交强险、上牌费等购车所需税费，帮助您提前做好购车预算。">
+  <meta name="keywords" content="汽车购置税计算器,车辆购置税,车船税,交强险,上牌费,购车税费">
+  <meta name="author" content="FinCalc Pro">
+  <meta name="robots" content="index, follow">
+
+  <link rel="canonical" href="https://financecalchub.com/purchase-tax-calculator.html">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://financecalchub.com/purchase-tax-calculator.html">
+  <meta property="og:title" content="汽车购置税计算器 - 购车税费明细计算">
+  <meta property="og:description" content="根据裸车价计算购置税、车船税、交强险、上牌费等购车税费明细。">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚙</text></svg>">
+
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- Schema.org -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "汽车购置税计算器",
+    "description": "根据裸车价计算购置税、车船税、交强险、上牌费等购车税费",
+    "url": "https://financecalchub.com/purchase-tax-calculator.html",
+    "applicationCategory": "FinanceApplication",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "CNY" }
+  }
+  </script>
+</head>
+<body>
+  <!-- Header -->
+  <header role="banner">
+    <div class="header-inner">
+      <a href="/" class="logo" aria-label="FinCalc Pro 首页">Fin<span>Calc</span> Pro</a>
+      <nav class="nav-links" aria-label="主导航">
+        <a href="/#calculators">计算工具</a>
+        <a href="/#features">特性</a>
+        <a href="#">文档</a>
+        <button class="theme-toggle" id="themeToggle" aria-label="切换深色/浅色主题" aria-pressed="false">🌙</button>
+      </nav>
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="菜单">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="calculator-page">
+    <div class="container">
+      <div class="section-header text-left mb-8">
+        <h1>汽车购置税计算器</h1>
+        <p>根据裸车价计算购置税、车船税、交强险、上牌费等购车所需全部费用</p>
+      </div>
+
+      <div class="calculator-layout">
+        <!-- Calculator Form -->
+        <div class="calculator-form-section">
+          <!-- Vehicle Type -->
+          <div class="form-group">
+            <label class="form-label">车辆类型</label>
+            <div class="form-tabs">
+              <button class="form-tab active" data-vehicle-type="fuel">燃油车</button>
+              <button class="form-tab" data-vehicle-type="new-energy">新能源车</button>
+              <button class="form-tab" data-vehicle-type="used">二手车</button>
+            </div>
+          </div>
+
+          <!-- Car Price -->
+          <div class="form-group">
+            <label class="form-label">裸车价格</label>
+            <div class="form-input-wrapper">
+              <span class="form-input-currency">¥</span>
+              <input type="number" class="form-input" id="carPrice" value="200000" min="0" step="1000">
+            </div>
+            <div class="quick-buttons">
+              <button class="quick-btn" data-value="100000">10万</button>
+              <button class="quick-btn active" data-value="200000">20万</button>
+              <button class="quick-btn" data-value="300000">30万</button>
+              <button class="quick-btn" data-value="500000">50万</button>
+              <button class="quick-btn" data-value="1000000">100万</button>
+            </div>
+          </div>
+
+          <!-- Displacement -->
+          <div class="form-group" id="displacementGroup">
+            <label class="form-label">排量 (L)</label>
+            <div class="form-tabs">
+              <button class="form-tab active" data-displacement="1.6">≤1.6L</button>
+              <button class="form-tab" data-displacement="2.0">1.6L-2.0L</button>
+              <button class="form-tab" data-displacement="2.5">2.0L-2.5L</button>
+              <button class="form-tab" data-displacement="3.0">2.5L-3.0L</button>
+              <button class="form-tab" data-displacement="4.0">3.0L-4.0L</button>
+              <button class="form-tab" data-displacement="4.0+">>4.0L</button>
+            </div>
+          </div>
+
+          <!-- Insurance -->
+          <div class="form-group">
+            <label class="form-label">交强险 + 商业险 (估算)</label>
+            <div class="form-input-wrapper">
+              <span class="form-input-currency">¥</span>
+              <input type="number" class="form-input" id="insurance" value="6000" min="0" step="100">
+            </div>
+            <div class="quick-buttons">
+              <button class="quick-btn" data-value="3000">3000</button>
+              <button class="quick-btn" data-value="5000">5000</button>
+              <button class="quick-btn active" data-value="6000">6000</button>
+              <button class="quick-btn" data-value="8000">8000</button>
+              <button class="quick-btn" data-value="12000">12000</button>
+            </div>
+          </div>
+
+          <!-- License Fee -->
+          <div class="form-group">
+            <label class="form-label">上牌费</label>
+            <div class="form-input-wrapper">
+              <span class="form-input-currency">¥</span>
+              <input type="number" class="form-input" id="licenseFee" value="500" min="0" step="100">
+            </div>
+            <div class="quick-buttons">
+              <button class="quick-btn" data-value="300">300</button>
+              <button class="quick-btn active" data-value="500">500</button>
+              <button class="quick-btn" data-value="1000">1000</button>
+              <button class="quick-btn" data-value="2000">2000</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Results Section -->
+        <div class="calculator-results-section">
+          <div class="result-card">
+            <div class="result-card-header">
+              <h3 class="result-card-title">购车费用明细</h3>
+            </div>
+
+            <div class="result-highlight">
+              <div class="result-highlight-value" id="totalCost">225,500.00</div>
+              <div class="result-highlight-label">预计落地总价</div>
+            </div>
+
+            <div class="result-grid">
+              <div class="result-item">
+                <div class="result-item-label">裸车价</div>
+                <div class="result-item-value" id="resultCarPrice">200,000.00</div>
+              </div>
+              <div class="result-item">
+                <div class="result-item-label">购置税</div>
+                <div class="result-item-value text-primary" id="purchaseTax">17,699.12</div>
+              </div>
+              <div class="result-item">
+                <div class="result-item-label">车船税 (年)</div>
+                <div class="result-item-value" id="vehicleTax">420.00</div>
+              </div>
+              <div class="result-item">
+                <div class="result-item-label">交强险 + 商业险</div>
+                <div class="result-item-value" id="resultInsurance">6,000.00</div>
+              </div>
+              <div class="result-item">
+                <div class="result-item-label">上牌费</div>
+                <div class="result-item-value" id="resultLicenseFee">500.00</div>
+              </div>
+              <div class="result-item">
+                <div class="result-item-label">税费小计</div>
+                <div class="result-item-value text-success" id="taxTotal">18,119.12</div>
+              </div>
+            </div>
+
+            <div class="chart-container">
+              <div class="chart-title">费用占比</div>
+              <canvas id="pieChart" width="340" height="220"></canvas>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- SEO Content -->
+      <div class="seo-content">
+        <h2>关于汽车购置税计算器</h2>
+        <p>汽车购置税计算器帮助您在购车前全面了解需要支付的各项费用，包括车辆购置税、车船税、交强险、商业险、上牌费等。提前做好预算规划，可以避免购车时因费用超支而带来的困扰。</p>
+
+        <h3>车辆购置税</h3>
+        <p>车辆购置税是购买新车时必须缴纳的税费，税率为不含增值税车价的10%。计算公式为：</p>
+        <p><strong>购置税 = 裸车价 ÷ 1.13 × 10%</strong></p>
+        <p>例如：裸车价20万元的燃油车，购置税约为 200,000 ÷ 1.13 × 10% = 17,699 元。</p>
+
+        <h3>新能源车优惠政策</h3>
+        <p>根据现行政策，符合条件的新能源汽车（纯电动、插电式混合动力、燃料电池汽车）免征车辆购置税。本计算器选择"新能源车"时购置税为0。</p>
+
+        <h3>车船税参考</h3>
+        <ul>
+          <li>1.0L 及以下：约 60-360 元/年</li>
+          <li>1.0L - 1.6L：约 300-540 元/年</li>
+          <li>1.6L - 2.0L：约 360-660 元/年</li>
+          <li>2.0L - 2.5L：约 660-1200 元/年</li>
+          <li>2.5L - 3.0L：约 1200-2400 元/年</li>
+          <li>3.0L - 4.0L：约 2400-3600 元/年</li>
+          <li>4.0L 以上：约 3600-5400 元/年</li>
+        </ul>
+        <p>注意：车船税各地标准不同，以上为常见范围，具体以当地规定为准。</p>
+
+        <h3>使用说明</h3>
+        <p>本计算器结果仅供参考，实际费用可能因地区政策、保险公司报价、经销商收费等因素有所差异。建议在购车前向经销商或相关部门确认具体费用。</p>
+
+        <!-- FAQ Section -->
+        <div class="faq-section">
+          <h3>常见问题</h3>
+
+          <div class="faq-item">
+            <div class="faq-question">新能源汽车需要交购置税吗？</div>
+            <div class="faq-answer">
+              根据现行政策，符合条件的新能源汽车免征车辆购置税。本计算器选择"新能源车"时购置税为0。
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">购置税可以减免吗？</div>
+            <div class="faq-answer">
+              普通燃油车一般按10%缴纳购置税。在部分促销政策期间，小排量燃油车可能享受购置税减半优惠。新能源汽车则直接免征。
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">二手车需要交购置税吗？</div>
+            <div class="faq-answer">
+              一般情况下，已经缴纳过购置税的二手车不需要再次缴纳购置税。但二手车交易需要办理过户手续，可能涉及过户费、评估费等。
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer role="contentinfo">
+    <div class="container">
+      <p>© 2025 <a href="/">FinCalc Pro</a> — 专业金融计算工具箱 · 仅供参考，不构成投资建议</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script>
+    (function() {
+      let state = {
+        vehicleType: 'fuel',
+        carPrice: 200000,
+        displacement: '1.6',
+        insurance: 6000,
+        licenseFee: 500
+      };
+
+      const displacementTax = {
+        '1.6': 300,
+        '2.0': 420,
+        '2.5': 900,
+        '3.0': 1800,
+        '4.0': 3000,
+        '4.0+': 4500
+      };
+
+      const elements = {
+        carPrice: document.getElementById('carPrice'),
+        insurance: document.getElementById('insurance'),
+        licenseFee: document.getElementById('licenseFee'),
+        totalCost: document.getElementById('totalCost'),
+        resultCarPrice: document.getElementById('resultCarPrice'),
+        purchaseTax: document.getElementById('purchaseTax'),
+        vehicleTax: document.getElementById('vehicleTax'),
+        resultInsurance: document.getElementById('resultInsurance'),
+        resultLicenseFee: document.getElementById('resultLicenseFee'),
+        taxTotal: document.getElementById('taxTotal'),
+        displacementGroup: document.getElementById('displacementGroup')
+      };
+
+      function init() {
+        bindEvents();
+        calculate();
+        FinanceCalc.onThemeChange(() => calculate());
+      }
+
+      function bindEvents() {
+        document.querySelectorAll('.form-tab[data-vehicle-type]').forEach(tab => {
+          tab.addEventListener('click', function() {
+            document.querySelectorAll('.form-tab[data-vehicle-type]').forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+            state.vehicleType = this.dataset.vehicleType;
+            updateUIVisibility();
+            calculate();
+          });
+        });
+
+        elements.carPrice.addEventListener('input', function() {
+          state.carPrice = parseFloat(this.value) || 0;
+          calculate();
+        });
+
+        elements.insurance.addEventListener('input', function() {
+          state.insurance = parseFloat(this.value) || 0;
+          calculate();
+        });
+
+        elements.licenseFee.addEventListener('input', function() {
+          state.licenseFee = parseFloat(this.value) || 0;
+          calculate();
+        });
+
+        document.querySelectorAll('.form-tab[data-displacement]').forEach(tab => {
+          tab.addEventListener('click', function() {
+            document.querySelectorAll('.form-tab[data-displacement]').forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+            state.displacement = this.dataset.displacement;
+            calculate();
+          });
+        });
+
+        // Quick buttons
+        document.querySelectorAll('.form-group:nth-of-type(2) .quick-btn').forEach(btn => {
+          btn.addEventListener('click', function() {
+            elements.carPrice.value = this.dataset.value;
+            state.carPrice = parseFloat(this.dataset.value);
+            calculate();
+          });
+        });
+
+        document.querySelectorAll('.form-group:nth-of-type(4) .quick-btn').forEach(btn => {
+          btn.addEventListener('click', function() {
+            elements.insurance.value = this.dataset.value;
+            state.insurance = parseFloat(this.dataset.value);
+            calculate();
+          });
+        });
+
+        document.querySelectorAll('.form-group:nth-of-type(5) .quick-btn').forEach(btn => {
+          btn.addEventListener('click', function() {
+            elements.licenseFee.value = this.dataset.value;
+            state.licenseFee = parseFloat(this.dataset.value);
+            calculate();
+          });
+        });
+      }
+
+      function updateUIVisibility() {
+        if (state.vehicleType === 'new-energy') {
+          elements.displacementGroup.style.display = 'none';
+        } else {
+          elements.displacementGroup.style.display = 'block';
+        }
+      }
+
+      function calculate() {
+        const { vehicleType, carPrice, displacement, insurance, licenseFee } = state;
+
+        let purchaseTax = 0;
+        let vehicleTax = 0;
+
+        if (vehicleType === 'fuel' || vehicleType === 'used') {
+          purchaseTax = carPrice / 1.13 * 0.10;
+          vehicleTax = displacementTax[displacement] || 420;
+        }
+
+        const taxTotal = purchaseTax + vehicleTax;
+        const totalCost = carPrice + taxTotal + insurance + licenseFee;
+
+        elements.totalCost.textContent = FinanceCalc.formatCurrency(totalCost).replace('¥', '');
+        elements.resultCarPrice.textContent = FinanceCalc.formatCurrency(carPrice);
+        elements.purchaseTax.textContent = FinanceCalc.formatCurrency(purchaseTax);
+        elements.vehicleTax.textContent = FinanceCalc.formatCurrency(vehicleTax);
+        elements.resultInsurance.textContent = FinanceCalc.formatCurrency(insurance);
+        elements.resultLicenseFee.textContent = FinanceCalc.formatCurrency(licenseFee);
+        elements.taxTotal.textContent = FinanceCalc.formatCurrency(taxTotal);
+
+        renderPieChart(carPrice, purchaseTax, vehicleTax, insurance, licenseFee);
+      }
+
+      function renderPieChart(carPrice, purchaseTax, vehicleTax, insurance, licenseFee) {
+        const canvas = document.getElementById('pieChart');
+        if (!canvas) return;
+
+        const colors = FinanceCalc.getChartColors();
+        const ctx = canvas.getContext('2d');
+        const dpr = window.devicePixelRatio || 1;
+        const rect = canvas.getBoundingClientRect();
+        canvas.width = rect.width * dpr;
+        canvas.height = rect.height * dpr;
+        ctx.scale(dpr, dpr);
+
+        const data = [carPrice, purchaseTax, vehicleTax, insurance, licenseFee];
+        const labels = ['裸车价', '购置税', '车船税', '保险', '上牌费'];
+        const chartColors = [colors.info, colors.primary, colors.warning, colors.success, colors.danger];
+        const total = data.reduce((a, b) => a + b, 0);
+
+        ctx.clearRect(0, 0, rect.width, rect.height);
+
+        if (total === 0) return;
+
+        const centerX = rect.width / 2 - 60;
+        const centerY = rect.height / 2;
+        const radius = Math.min(centerX, centerY) - 20;
+        let startAngle = -Math.PI / 2;
+
+        data.forEach((value, i) => {
+          if (value <= 0) return;
+          const sliceAngle = (value / total) * 2 * Math.PI;
+          ctx.beginPath();
+          ctx.moveTo(centerX, centerY);
+          ctx.arc(centerX, centerY, radius, startAngle, startAngle + sliceAngle);
+          ctx.closePath();
+          ctx.fillStyle = chartColors[i];
+          ctx.fill();
+          startAngle += sliceAngle;
+        });
+
+        // Legend
+        let legendY = 30;
+        ctx.textAlign = 'left';
+        ctx.font = '12px ' + getComputedStyle(document.documentElement).getPropertyValue('--font-sans');
+        data.forEach((value, i) => {
+          if (value <= 0) return;
+          const x = centerX + radius + 30;
+          ctx.fillStyle = chartColors[i];
+          ctx.fillRect(x, legendY - 8, 12, 12);
+          ctx.fillStyle = colors.text;
+          ctx.fillText(labels[i] + ' ' + ((value / total) * 100).toFixed(1) + '%', x + 18, legendY);
+          legendY += 22;
+        });
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else {
+        init();
+      }
+    })();
+  </script>
+</body>
+</html>
