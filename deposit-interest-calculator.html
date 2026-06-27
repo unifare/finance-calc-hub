@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>存款利息计算器 - 活期/定期存款利息计算 | FinCalc Pro</title>
+  <meta name="description" content="免费在线存款利息计算器，计算活期存款和定期存款的利息收益。支持多种存期，提供本息合计计算结果。">
+  <meta name="keywords" content="存款利息计算器,活期存款,定期存款,利息计算,储蓄计算器">
+  <meta name="author" content="FinCalc Pro">
+  <meta name="robots" content="index, follow">
+  
+  <link rel="canonical" href="https://financecalchub.com/deposit-interest-calculator.html">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏦</text></svg>">
+  
+  <link rel="stylesheet" href="css/style.css">
+  
+  <!-- Schema.org -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "存款利息计算器",
+    "description": "计算活期和定期存款的利息收益",
+    "url": "https://financecalchub.com/deposit-interest-calculator.html",
+    "applicationCategory": "FinanceApplication",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "CNY" }
+  }
+  </script>
+</head>
+<body>
+  <!-- Header -->
+  <header role="banner">
+    <div class="header-inner">
+      <a href="/" class="logo" aria-label="FinCalc Pro 首页">Fin<span>Calc</span> Pro</a>
+      <nav class="nav-links" aria-label="主导航">
+        <a href="/#calculators">计算工具</a>
+        <a href="/#features">特性</a>
+        <a href="#">文档</a>
+        <button class="theme-toggle" id="themeToggle" aria-label="切换深色/浅色主题" aria-pressed="false">🌙</button>
+      </nav>
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="菜单">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="calculator-page">
+    <div class="container">
+      <div class="section-header text-left mb-8">
+        <h1>存款利息计算器</h1>
+        <p>计算活期和定期存款的利息收益，支持多种存期选择</p>
+      </div>
+      
+      <div class="calculator-layout">
+        <!-- Calculator Form -->
+        <div class="calculator-form-section">
+          <!-- Deposit Type -->
+          <div class="form-group">
+            <label class="form-label">存款类型</label>
+            <div class="form-tabs">
+              <button class="form-tab" data-deposit-type="demand">活期存款</button>
+              <button class="form-tab active" data-deposit-type="fixed">定期存款</button>
+            </div>
+          </div>
+
+          <!-- Deposit Amount -->
+          <div class="form-group">
+            <label class="form-label">存款金额</label>
+            <div class="form-input-wrapper">
+              <span class="form-input-currency">¥</span>
+              <input type="number" class="form-input" id="depositAmount" value="100000" min="0" step="1000">
+            </div>
+            <div class="quick-buttons">
+              <button class="quick-btn" data-value="10000">1万</button>
+              <button class="quick-btn" data-value="50000">5万</button>
+              <button class="quick-btn active" data-value="100000">10万</button>
+              <button class="quick-btn" data-value="200000">20万</button>
+              <button class="quick-btn" data-value="500000">50万</button>
+            </div>
+          </div>
+
+          <!-- Interest Rate -->
+          <div class="form-group" id="fixedRateGroup">
+            <label class="form-label">年利率</label>
+            <div class="form-input-wrapper">
+              <input type="number" class="form-input" id="interestRate" value="2.0" min="0" max="20" step="0.01" style="padding-right: 50px;">
+              <span class="form-input-suffix">%</span>
+            </div>
+            <div class="quick-buttons">
+              <button class="quick-btn" data-value="1.5">1.5%</button>
+              <button class="quick-btn active" data-value="2.0">2.0%</button>
+              <button class="quick-btn" data-value="2.5">2.5%</button>
+              <button class="quick-btn" data-value="3.0">3.0%</button>
+              <button class="quick-btn" data-value="3.5">3.5%</button>
+            </div>
+          </div>
+
+          <!-- Deposit Period -->
+          <div class="form-group" id="depositPeriodGroup">
+            <label class="form-label">存期</label>
+            <div class="form-tabs" style="flex-wrap: wrap;">
+              <button class="form-tab" data-period="7">7天</button>
+              <button class="form-tab" data-period="30">1个月</button>
+              <button class="form-tab" data-period="90">3个月</button>
+              <button class="form-tab" data-period="180">半年</button>
+              <button class="form-tab active" data-period="365">1年</button>
+              <button class="form-tab" data-period="730">2年</button>
+              <button class="form-tab" data-period="1095">3年</button>
+              <button class="form-tab" data-period="1825">5年</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Results Section -->
+        <div class="calculator-results-section">
+          <div class="result-card">
+            <div class="result-card-header">
+              <h3 class="result-card-title">利息计算结果</h3>
+              <span id="resultType" class="text-muted text-sm">定期存款</span>
+            </div>
+            
+            <!-- Main Result -->
+            <div class="result-highlight">
+              <div class="result-highlight-value" id="totalInterest">2,000.00</div>
+              <div class="result-highlight-label">利息收益</div>
+            </div>
+            
+            <div class="result-grid">
+              <div class="result-item">
+                <div class="result-item-label">存款本金</div>
+                <div class="result-item-value" id="resultPrincipal">100,000.00</div>
+              </div>
+              <div class="result-item">
+                <div class="result-item-label">本息合计</div>
+                <div class="result-item-value text-primary" id="resultTotal">102,000.00</div>
+              </div>
+              <div class="result-item">
+                <div class="result-item-label">存款期限</div>
+                <div class="result-item-value" id="resultPeriod">1年</div>
+              </div>
+              <div class="result-item">
+                <div class="result-item-label">年利率</div>
+                <div class="result-item-value" id="resultRate">2.00%</div>
+              </div>
+            </div>
+            
+            <!-- Interest Comparison Chart -->
+            <div class="chart-container">
+              <div class="chart-title">利息对比</div>
+              <div class="result-grid">
+                <div class="result-item" style="background: var(--color-primary-subtle);">
+                  <div class="result-item-label">本金</div>
+                  <div class="result-item-value text-primary" id="chartPrincipal">100,000</div>
+                </div>
+                <div class="result-item" style="background: var(--color-success-subtle);">
+                  <div class="result-item-label">利息</div>
+                  <div class="result-item-value text-success" id="chartInterest">2,000</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+
+      <!-- SEO Content -->
+      <div class="seo-content">
+        <h2>关于存款利息计算器</h2>
+        <p>存款利息计算器帮助您计算活期存款和定期存款的利息收益，了解不同存期的利息差异。</p>
+        
+        <h3>活期存款 vs 定期存款</h3>
+        <ul>
+          <li><strong>活期存款</strong>：随时可以存取，流动性好但利率较低，目前基准利率约0.35%</li>
+          <li><strong>定期存款</strong>：约定期限，利率较高，常见有3个月、6个月、1年、2年、3年、5年等</li>
+        </ul>
+        
+        <h3>定期存款利率参考</h3>
+        <ul>
+          <li>3个月：1.5% - 1.8%</li>
+          <li>6个月：1.7% - 2.0%</li>
+          <li>1年：1.8% - 2.5%</li>
+          <li>2年：2.1% - 3.0%</li>
+          <li>3年：2.5% - 3.5%</li>
+          <li>5年：2.8% - 4.0%</li>
+        </ul>
+        
+        <h3>存款利息计算公式</h3>
+        <p><strong>利息 = 本金 × 年利率 × 存期（年）</strong></p>
+        <p>例如：10万元存1年，年利率2%，利息 = 100,000 × 2% × 1 = 2,000元</p>
+        
+        <!-- FAQ Section -->
+        <div class="faq-section">
+          <h3>常见问题</h3>
+          
+          <div class="faq-item">
+            <div class="faq-question">定期存款提前取出会有损失吗？</div>
+            <div class="faq-answer">
+              是的，定期存款如果提前支取，银行会按活期利率计算利息，而不是定期利率。因此建议用闲置资金存定期，避免提前支取造成利息损失。
+            </div>
+          </div>
+          
+          <div class="faq-item">
+            <div class="faq-question">大额存单和普通定期哪个更好？</div>
+            <div class="faq-answer">
+              大额存单通常利率更高（一般上浮10%-55%），但有起购金额要求（通常20万起）。如果资金量大且短期内不用，大额存单是更好的选择。
+            </div>
+          </div>
+          
+          <div class="faq-item">
+            <div class="faq-question">存款需要考虑通货膨胀吗？</div>
+            <div class="faq-answer">
+              长期存款需要考虑通胀因素。如果通胀率高于存款利率，实际购买力可能会下降。建议合理分配资金，一部分做存款，一部分做其他投资。
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer role="contentinfo">
+    <div class="container">
+      <p>© 2025 <a href="/">FinCalc Pro</a> — 专业金融计算工具箱 · 仅供参考，不构成投资建议</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script>
+    (function() {
+      let state = {
+        depositType: 'fixed',
+        depositAmount: 100000,
+        interestRate: 2.0,
+        period: 365  // days
+      };
+      
+      const periodLabels = {
+        7: '7天',
+        30: '1个月',
+        90: '3个月',
+        180: '半年',
+        365: '1年',
+        730: '2年',
+        1095: '3年',
+        1825: '5年'
+      };
+      
+      const demandRate = 0.35; // Current demand deposit rate
+      
+      // DOM Elements
+      const elements = {
+        depositAmount: document.getElementById('depositAmount'),
+        interestRate: document.getElementById('interestRate'),
+        resultType: document.getElementById('resultType'),
+        totalInterest: document.getElementById('totalInterest'),
+        resultPrincipal: document.getElementById('resultPrincipal'),
+        resultTotal: document.getElementById('resultTotal'),
+        resultPeriod: document.getElementById('resultPeriod'),
+        resultRate: document.getElementById('resultRate'),
+        chartPrincipal: document.getElementById('chartPrincipal'),
+        chartInterest: document.getElementById('chartInterest'),
+        fixedRateGroup: document.getElementById('fixedRateGroup'),
+        depositPeriodGroup: document.getElementById('depositPeriodGroup')
+      };
+      
+      function init() {
+        bindEvents();
+        calculate();
+      }
+      
+      function bindEvents() {
+        // Deposit type tabs
+        document.querySelectorAll('.form-tab[data-deposit-type]').forEach(tab => {
+          tab.addEventListener('click', function() {
+            document.querySelectorAll('.form-tab[data-deposit-type]').forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+            state.depositType = this.dataset.depositType;
+            updateUIVisibility();
+            calculate();
+          });
+        });
+        
+        elements.depositAmount.addEventListener('input', function() {
+          state.depositAmount = parseFloat(this.value) || 0;
+          calculate();
+        });
+        
+        elements.interestRate.addEventListener('input', function() {
+          state.interestRate = parseFloat(this.value) || 0;
+          calculate();
+        });
+        
+        // Period tabs
+        document.querySelectorAll('.form-tab[data-period]').forEach(tab => {
+          tab.addEventListener('click', function() {
+            document.querySelectorAll('.form-tab[data-period]').forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+            state.period = parseInt(this.dataset.period);
+            calculate();
+          });
+        });
+        
+        // Quick buttons for amount
+        document.querySelectorAll('.form-group:nth-of-type(2) .quick-btn').forEach(btn => {
+          btn.addEventListener('click', function() {
+            elements.depositAmount.value = this.dataset.value;
+            state.depositAmount = parseFloat(this.dataset.value);
+            calculate();
+          });
+        });
+        
+        // Quick buttons for rate
+        document.querySelectorAll('.form-group:nth-of-type(3) .quick-btn').forEach(btn => {
+          btn.addEventListener('click', function() {
+            elements.interestRate.value = this.dataset.value;
+            state.interestRate = parseFloat(this.dataset.value);
+            calculate();
+          });
+        });
+      }
+      
+      function updateUIVisibility() {
+        if (state.depositType === 'demand') {
+          elements.fixedRateGroup.style.display = 'none';
+          elements.depositPeriodGroup.style.display = 'none';
+          state.interestRate = demandRate;
+          elements.interestRate.value = demandRate;
+        } else {
+          elements.fixedRateGroup.style.display = 'block';
+          elements.depositPeriodGroup.style.display = 'block';
+          state.interestRate = 2.0;
+          elements.interestRate.value = 2.0;
+        }
+      }
+      
+      function calculate() {
+        const { depositType, depositAmount, interestRate, period } = state;
+        
+        let interest = 0;
+        let periodYears = 0;
+        
+        if (depositType === 'demand') {
+          // Demand deposit interest = principal × rate × days / 365
+          periodYears = period / 365;
+          interest = depositAmount * (demandRate / 100) * periodYears;
+        } else {
+          // Fixed deposit interest = principal × rate × period (years)
+          periodYears = period / 365;
+          interest = depositAmount * (interestRate / 100) * periodYears;
+        }
+        
+        const total = depositAmount + interest;
+        
+        // Update UI
+        elements.totalInterest.textContent = FinanceCalc.formatCurrency(interest).replace('¥', '');
+        elements.resultPrincipal.textContent = FinanceCalc.formatCurrency(depositAmount);
+        elements.resultTotal.textContent = FinanceCalc.formatCurrency(total);
+        elements.resultPeriod.textContent = state.depositType === 'demand' ? periodLabels[period] : periodLabels[period];
+        elements.resultRate.textContent = (state.depositType === 'demand' ? demandRate : interestRate).toFixed(2) + '%';
+        elements.resultType.textContent = state.depositType === 'demand' ? '活期存款' : '定期存款';
+        
+        elements.chartPrincipal.textContent = FinanceCalc.formatNumber(depositAmount / 10000, 0) + '万';
+        elements.chartInterest.textContent = FinanceCalc.formatNumber(interest / 10000, 0) + '万';
+      }
+      
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else {
+        init();
+      }
+    })();
+  </script>
+</body>
+</html>
