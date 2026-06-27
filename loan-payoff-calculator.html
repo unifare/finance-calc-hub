@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>提前还款计算器 - 贷款提前还款节省利息计算 | FinCalc Pro</title>
+  <meta name="description" content="免费在线提前还款计算器，计算提前还款可节省的利息金额和缩短的还款年限，生成新的还款计划。适用于房贷、车贷等各种贷款。">
+  <meta name="keywords" content="提前还款计算器,还贷计算,节省利息,缩短年限,贷款计算">
+  <meta name="author" content="FinCalc Pro">
+  <meta name="robots" content="index, follow">
+  
+  <link rel="canonical" href="https://financecalchub.com/loan-payoff-calculator.html">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  
+  <link rel="stylesheet" href="css/style.css">
+  
+  <!-- Schema.org -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "提前还款计算器",
+    "description": "计算提前还款可节省的利息和缩短的还款年限",
+    "url": "https://financecalchub.com/loan-payoff-calculator.html",
+    "applicationCategory": "FinanceApplication",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "CNY" }
+  }
+  </script>
+</head>
+<body>
+  <!-- Header -->
+  <header role="banner">
+    <div class="header-inner">
+      <a href="/" class="logo" aria-label="FinCalc Pro 首页">Fin<span>Calc</span> Pro</a>
+      <nav class="nav-links" aria-label="主导航">
+        <a href="/#calculators">计算工具</a>
+        <a href="/#features">特性</a>
+        <a href="#">文档</a>
+        <button class="theme-toggle" id="themeToggle" aria-label="切换深色/浅色主题" aria-pressed="false">🌙</button>
+      </nav>
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="菜单">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="calculator-page">
+    <div class="container">
+      <div class="section-header text-left mb-8">
+        <h1>提前还款计算器</h1>
+        <p>计算提前还款可节省的利息、缩短的年限，以及新的还款计划</p>
+      </div>
+      
+      <div class="calculator-layout">
+        <!-- Calculator Form -->
+        <div class="calculator-form-section">
+          <!-- Loan Type -->
+          <div class="form-group">
+            <label class="form-label">还款方式</label>
+            <div class="form-tabs">
+              <button class="form-tab active" data-loan-type="equal-payment">等额本息</button>
+              <button class="form-tab" data-loan-type="equal-principal">等额本金</button>
+            </div>
+          </div>
+
+          <!-- Remaining Principal -->
+          <div class="form-group">
+            <label class="form-label">剩余本金</label>
+            <div class="form-input-wrapper">
+              <span class="form-input-currency">¥</span>
+              <input type="number" class="form-input" id="remainingPrincipal" value="1500000" min="0" step="10000">
+            </div>
+            <div class="quick-buttons">
+              <button class="quick-btn" data-value="500000">50万</button>
+              <button class="quick-btn" data-value="1000000">100万</button>
+              <button class="quick-btn active" data-value="1500000">150万</button>
+              <button class="quick-btn" data-value="2000000">200万</button>
+              <button class="quick-btn" data-value="3000000">300万</button>
+            </div>
+          </div>
+
+          <!-- Remaining Years -->
+          <div class="form-group">
+            <label class="form-label">剩余期限</label>
+            <input type="range" class="form-range" id="remainingYears" min="1" max="30" value="15" step="1">
+            <div class="range-value">
+              <span>1年</span>
+              <span>30年</span>
+            </div>
+            <p class="text-center mt-2">剩余期限：<span id="yearsDisplay" class="font-bold text-primary">15年</span> (<span id="monthsDisplay" class="font-bold">180</span>个月)</p>
+            <div class="quick-buttons">
+              <button class="quick-btn" data-value="5">5年</button>
+              <button class="quick-btn" data-value="10">10年</button>
+              <button class="quick-btn active" data-value="15">15年</button>
+              <button class="quick-btn" data-value="20">20年</button>
+              <button class="quick-btn" data-value="25">25年</button>
+            </div>
+          </div>
+
+          <!-- Current Interest Rate -->
+          <div class="form-group">
+            <label class="form-label">年利率</label>
+            <div class="form-input-wrapper">
+              <input type="number" class="form-input" id="interestRate" value="4.5" min="0" max="20" step="0.01" style="padding-right: 50px;">
+              <span class="form-input-suffix">%</span>
+            </div>
+            <div class="quick-buttons">
+              <button class="quick-btn" data-value="3.1">3.1%</button>
+              <button class="quick-btn" data-value="3.5">3.5%</button>
+              <button class="quick-btn active" data-value="4.5">4.5%</button>
+              <button class="quick-btn" data-value="5.0">5.0%</button>
+              <button class="quick-btn" data-value="5.5">5.5%</button>
+            </div>
+          </div>
+
+          <!-- Early Payment Amount -->
+          <div class="form-group">
+            <label class="form-label">提前还款金额</label>
+            <div class="form-input-wrapper">
+              <span class="form-input-currency">¥</span>
+              <input type="number" class="form-input" id="earlyPaymentAmount" value="200000" min="0" step="10000">
+            </div>
+            <div class="quick-buttons">
+              <button class="quick-btn" data-value="100000">10万</button>
+              <button class="quick-btn active" data-value="200000">20万</button>
+              <button class="quick-btn" data-value="500000">50万</button>
+              <button class="quick-btn" data-value="1000000">100万</button>
+            </div>
+          </div>
+
+          <!-- Payment Reduction Option -->
+          <div class="form-group">
+            <label class="form-label">提前还款后选择</label>
+            <div class="form-tabs">
+              <button class="form-tab active" data-reduction="months">缩短年限</button>
+              <button class="form-tab" data-reduction="payment">减少月供</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Results Section -->
+        <div class="calculator-results-section">
+          <div class="result-card">
+            <div class="result-card-header">
+              <h3 class="result-card-title">提前还款效果</h3>
+            </div>
+            
+            <!-- Main Result -->
+            <div class="result-highlight">
+              <div class="result-highlight-value text-success" id="savedInterest">186,420.80</div>
+              <div class="result-highlight-label">节省利息</div>
+            </div>
+            
+            <div class="result-grid">
+              <div class="result-item">
+                <div class="result-item-label">缩短年限</div>
+                <div class="result-item-value text-success" id="savedYears">3年2个月</div>
+              </div>
+              <div class="result-item">
+                <div class="result-item-label">新月供</div>
+                <div class="result-item-value" id="newMonthlyPayment">8,597.32</div>
+              </div>
+              <div class="result-item">
+                <div class="result-item-label">原月供</div>
+                <div class="result-item-value" id="originalMonthlyPayment">11,536.19</div>
+              </div>
+              <div class="result-item">
+                <div class="result-item-label">月供减少</div>
+                <div class="result-item-value text-success" id="paymentReduction">2,938.87</div>
+              </div>
+            </div>
+            
+            <!-- Comparison -->
+            <div class="chart-container">
+              <div class="chart-title">还款对比</div>
+              <div class="result-grid">
+                <div class="result-item" style="background: var(--color-danger-subtle);">
+                  <div class="result-item-label">原还款总额</div>
+                  <div class="result-item-value text-danger" id="originalTotalPayment">2,076,514.69</div>
+                </div>
+                <div class="result-item" style="background: var(--color-success-subtle);">
+                  <div class="result-item-label">提前还款后总额</div>
+                  <div class="result-item-value text-success" id="newTotalPayment">1,890,093.89</div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Breakdown -->
+            <div class="result-breakdown">
+              <div class="result-breakdown-title">
+                <span>新还款计划</span>
+                <button class="toggle-btn" id="toggleBreakdown">
+                  展开
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="6,9 12,15 18,9"></polyline>
+                  </svg>
+                </button>
+              </div>
+              <div id="breakdownContent" class="hidden">
+                <table class="result-table">
+                  <thead>
+                    <tr>
+                      <th>年份</th>
+                      <th>月供</th>
+                      <th>本金</th>
+                      <th>利息</th>
+                      <th>剩余本金</th>
+                    </tr>
+                  </thead>
+                  <tbody id="breakdownTableBody">
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+
+      <!-- SEO Content -->
+      <div class="seo-content">
+        <h2>关于提前还款计算器</h2>
+        <p>提前还款计算器帮助您评估提前还贷能节省多少利息，以及新的还款计划。无论您选择缩短年限还是减少月供，都能一目了然看到节省的效果。</p>
+        
+        <h3>提前还款的两种方式</h3>
+        <ul>
+          <li><strong>缩短年限</strong>：保持月供不变，缩短还款期限。这种方式能节省更多利息。</li>
+          <li><strong>减少月供</strong>：保持还款期限不变，降低每月还款压力。节省的利息相对较少。</li>
+        </ul>
+        
+        <h3>提前还款适合人群</h3>
+        <ul>
+          <li>有一笔闲置资金，希望减少利息支出</li>
+          <li>收入稳定，预期未来现金流充裕</li>
+          <li>不想长期背负贷款压力</li>
+          <li>处于贷款初期，利息占比高，提前还款效果更明显</li>
+        </ul>
+        
+        <h3>提前还款注意事项</h3>
+        <ul>
+          <li>部分银行有提前还款违约金，通常为还款额的1%-3%</li>
+          <li>提前还款通常需要提前预约</li>
+          <li>公积金贷款和商业贷款政策可能不同</li>
+          <li>建议先了解清楚还款规则再决定</li>
+        </ul>
+        
+        <!-- FAQ Section -->
+        <div class="faq-section">
+          <h3>常见问题</h3>
+          
+          <div class="faq-item">
+            <div class="faq-question">提前还款能节省多少利息？</div>
+            <div class="faq-answer">
+              节省的利息取决于提前还款的时间和金额。贷款初期提前还款效果更明显，因为前期利息占比较高。使用本计算器可以精确计算出节省的利息金额。
+            </div>
+          </div>
+          
+          <div class="faq-item">
+            <div class="faq-question">缩短年限和减少月供哪个更划算？</div>
+            <div class="faq-answer">
+              缩短年限能节省更多利息，但减少月供能降低当前还款压力。如果收入稳定且希望减少总支出，选择缩短年限更好；如果需要更多现金流，选择减少月供。
+            </div>
+          </div>
+          
+          <div class="faq-item">
+            <div class="faq-question">提前还款有违约金吗？</div>
+            <div class="faq-answer">
+              部分银行会收取提前还款违约金，通常为还款额的1%-3%。建议在计算节省利息时扣除违约金，判断提前还款是否真正划算。
+            </div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-question">提前还款几次最合适？</div>
+            <div class="faq-answer">
+              没有固定的最佳次数。关键是如果有闲置资金且不影响应急储备，提前还款总是划算的。建议在贷款初期尽量多还。
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer role="contentinfo">
+    <div class="container">
+      <p>© 2025 <a href="/">FinCalc Pro</a> — 专业金融计算工具箱 · 仅供参考，不构成投资建议</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script>
+    (function() {
+      let state = {
+        loanType: 'equal-payment',
+        remainingPrincipal: 1500000,
+        remainingYears: 15,
+        interestRate: 4.5,
+        earlyPaymentAmount: 200000,
+        reductionType: 'months'
+      };
+      
+      const elements = {
+        remainingPrincipal: document.getElementById('remainingPrincipal'),
+        remainingYears: document.getElementById('remainingYears'),
+        yearsDisplay: document.getElementById('yearsDisplay'),
+        monthsDisplay: document.getElementById('monthsDisplay'),
+        interestRate: document.getElementById('interestRate'),
+        earlyPaymentAmount: document.getElementById('earlyPaymentAmount'),
+        savedInterest: document.getElementById('savedInterest'),
+        savedYears: document.getElementById('savedYears'),
+        newMonthlyPayment: document.getElementById('newMonthlyPayment'),
+        originalMonthlyPayment: document.getElementById('originalMonthlyPayment'),
+        paymentReduction: document.getElementById('paymentReduction'),
+        originalTotalPayment: document.getElementById('originalTotalPayment'),
+        newTotalPayment: document.getElementById('newTotalPayment'),
+        breakdownTableBody: document.getElementById('breakdownTableBody'),
+        toggleBreakdown: document.getElementById('toggleBreakdown'),
+        breakdownContent: document.getElementById('breakdownContent')
+      };
+      
+      function init() {
+        bindEvents();
+        calculate();
+      }
+      
+      function bindEvents() {
+        // Loan type tabs
+        document.querySelectorAll('.form-tab[data-loan-type]').forEach(tab => {
+          tab.addEventListener('click', function() {
+            document.querySelectorAll('.form-tab[data-loan-type]').forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+            state.loanType = this.dataset.loanType;
+            calculate();
+          });
+        });
+        
+        // Reduction type tabs
+        document.querySelectorAll('.form-tab[data-reduction]').forEach(tab => {
+          tab.addEventListener('click', function() {
+            document.querySelectorAll('.form-tab[data-reduction]').forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+            state.reductionType = this.dataset.reduction;
+            calculate();
+          });
+        });
+        
+        elements.remainingPrincipal.addEventListener('input', function() {
+          state.remainingPrincipal = parseFloat(this.value) || 0;
+          calculate();
+        });
+        
+        elements.remainingYears.addEventListener('input', function() {
+          state.remainingYears = parseInt(this.value) || 1;
+          elements.yearsDisplay.textContent = state.remainingYears + '年';
+          elements.monthsDisplay.textContent = (state.remainingYears * 12).toLocaleString();
+          calculate();
+        });
+        
+        elements.interestRate.addEventListener('input', function() {
+          state.interestRate = parseFloat(this.value) || 0;
+          calculate();
+        });
+        
+        elements.earlyPaymentAmount.addEventListener('input', function() {
+          state.earlyPaymentAmount = parseFloat(this.value) || 0;
+          calculate();
+        });
+        
+        // Quick buttons
+        document.querySelectorAll('.form-group:nth-of-type(2) .quick-btn').forEach(btn => {
+          btn.addEventListener('click', function() {
+            elements.remainingPrincipal.value = this.dataset.value;
+            state.remainingPrincipal = parseFloat(this.dataset.value);
+            calculate();
+          });
+        });
+        
+        document.querySelectorAll('.form-group:nth-of-type(3) .quick-btn').forEach(btn => {
+          btn.addEventListener('click', function() {
+            elements.remainingYears.value = this.dataset.value;
+            state.remainingYears = parseInt(this.dataset.value);
+            elements.yearsDisplay.textContent = state.remainingYears + '年';
+            elements.monthsDisplay.textContent = (state.remainingYears * 12).toLocaleString();
+            calculate();
+          });
+        });
+        
+        document.querySelectorAll('.form-group:nth-of-type(4) .quick-btn').forEach(btn => {
+          btn.addEventListener('click', function() {
+            elements.interestRate.value = this.dataset.value;
+            state.interestRate = parseFloat(this.dataset.value);
+            calculate();
+          });
+        });
+        
+        document.querySelectorAll('.form-group:nth-of-type(5) .quick-btn').forEach(btn => {
+          btn.addEventListener('click', function() {
+            elements.earlyPaymentAmount.value = this.dataset.value;
+            state.earlyPaymentAmount = parseFloat(this.dataset.value);
+            calculate();
+          });
+        });
+        
+        elements.toggleBreakdown.addEventListener('click', function() {
+          const isHidden = elements.breakdownContent.classList.contains('hidden');
+          elements.breakdownContent.classList.toggle('hidden');
+          this.innerHTML = isHidden ? 
+            '收起 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18,15 12,9 6,15"></polyline></svg>' :
+            '展开 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6,9 12,15 18,9"></polyline></svg>';
+        });
+      }
+      
+      function calculate() {
+        const { remainingPrincipal, remainingYears, interestRate, earlyPaymentAmount, reductionType } = state;
+        
+        const monthlyRate = interestRate / 100 / 12;
+        const totalMonths = remainingYears * 12;
+        
+        // Calculate original loan schedule
+        const originalSchedule = calculateSchedule(remainingPrincipal, monthlyRate, totalMonths);
+        const originalTotalPayment = originalSchedule.reduce((sum, m) => sum + m.payment, 0);
+        const originalMonthlyPayment = originalSchedule[0].payment;
+        
+        // New principal after early payment
+        const newPrincipal = remainingPrincipal - earlyPaymentAmount;
+        
+        if (newPrincipal <= 0) {
+          elements.savedInterest.textContent = '0.00';
+          elements.savedYears.textContent = remainingYears + '年';
+          elements.newMonthlyPayment.textContent = '0.00';
+          elements.originalMonthlyPayment.textContent = FinanceCalc.formatNumber(originalMonthlyPayment);
+          elements.paymentReduction.textContent = FinanceCalc.formatNumber(originalMonthlyPayment);
+          elements.originalTotalPayment.textContent = FinanceCalc.formatCurrency(originalTotalPayment);
+          elements.newTotalPayment.textContent = FinanceCalc.formatCurrency(earlyPaymentAmount);
+          return;
+        }
+        
+        let newSchedule, newTotalPayment, newMonthlyPayment, savedInterest, savedMonths;
+        
+        if (reductionType === 'months') {
+          // Keep monthly payment same, shorten period
+          // Calculate how many months needed to pay off new principal
+          newMonthlyPayment = originalMonthlyPayment;
+          savedMonths = calculateMonthsForPayoff(newPrincipal, monthlyRate, newMonthlyPayment);
+          
+          newSchedule = [];
+          let principal = newPrincipal;
+          for (let i = 0; i < savedMonths && principal > 0; i++) {
+            const interest = principal * monthlyRate;
+            const principalPayment = Math.min(newMonthlyPayment - interest, principal);
+            principal -= principalPayment;
+            newSchedule.push({
+              month: i + 1,
+              payment: newMonthlyPayment,
+              principal: principalPayment,
+              interest: interest,
+              remaining: Math.max(0, principal)
+            });
+          }
+          
+          newTotalPayment = newSchedule.reduce((sum, m) => sum + m.payment, 0);
+          savedInterest = originalTotalPayment - newTotalPayment - earlyPaymentAmount;
+        } else {
+          // Keep period same, reduce monthly payment
+          newSchedule = calculateSchedule(newPrincipal, monthlyRate, totalMonths);
+          newMonthlyPayment = newSchedule[0].payment;
+          newTotalPayment = newSchedule.reduce((sum, m) => sum + m.payment, 0);
+          savedInterest = originalTotalPayment - newTotalPayment - earlyPaymentAmount;
+          savedMonths = 0;
+        }
+        
+        // Update UI
+        elements.savedInterest.textContent = FinanceCalc.formatCurrency(savedInterest);
+        
+        if (reductionType === 'months') {
+          const years = Math.floor(savedMonths / 12);
+          const months = savedMonths % 12;
+          elements.savedYears.textContent = years + '年' + (months > 0 ? months + '个月' : '');
+        } else {
+          elements.savedYears.textContent = '-';
+        }
+        
+        elements.newMonthlyPayment.textContent = FinanceCalc.formatNumber(newMonthlyPayment);
+        elements.originalMonthlyPayment.textContent = FinanceCalc.formatNumber(originalMonthlyPayment);
+        elements.paymentReduction.textContent = FinanceCalc.formatNumber(originalMonthlyPayment - newMonthlyPayment);
+        elements.originalTotalPayment.textContent = FinanceCalc.formatCurrency(originalTotalPayment);
+        elements.newTotalPayment.textContent = FinanceCalc.formatCurrency(newTotalPayment + earlyPaymentAmount);
+        
+        // Update breakdown table
+        updateBreakdownTable(newSchedule);
+      }
+      
+      function calculateSchedule(principal, monthlyRate, months) {
+        const schedule = [];
+        let remainingPrincipal = principal;
+        
+        if (monthlyRate > 0) {
+          const payment = principal * monthlyRate * Math.pow(1 + monthlyRate, months) / (Math.pow(1 + monthlyRate, months) - 1);
+          
+          for (let i = 1; i <= months && remainingPrincipal > 0; i++) {
+            const interest = remainingPrincipal * monthlyRate;
+            const principalPayment = Math.min(payment - interest, remainingPrincipal);
+            remainingPrincipal -= principalPayment;
+            
+            schedule.push({
+              month: i,
+              payment: payment,
+              principal: principalPayment,
+              interest: interest,
+              remaining: Math.max(0, remainingPrincipal)
+            });
+          }
+        } else {
+          const payment = principal / months;
+          for (let i = 1; i <= months && remainingPrincipal > 0; i++) {
+            remainingPrincipal -= payment;
+            schedule.push({
+              month: i,
+              payment: payment,
+              principal: payment,
+              interest: 0,
+              remaining: Math.max(0, remainingPrincipal)
+            });
+          }
+        }
+        
+        return schedule;
+      }
+      
+      function calculateMonthsForPayoff(principal, monthlyRate, payment) {
+        if (monthlyRate === 0) return Math.ceil(principal / payment);
+        
+        let remaining = principal;
+        let months = 0;
+        
+        while (remaining > 0 && months < 360) {
+          const interest = remaining * monthlyRate;
+          const principalPayment = payment - interest;
+          if (principalPayment <= 0) return 360; // Cannot pay off
+          remaining -= principalPayment;
+          months++;
+        }
+        
+        return months;
+      }
+      
+      function updateBreakdownTable(schedule) {
+        const tbody = elements.breakdownTableBody;
+        tbody.innerHTML = '';
+        
+        const yearCount = Math.ceil(schedule.length / 12);
+        
+        for (let year = 0; year < yearCount; year++) {
+          const startMonth = year * 12;
+          const endMonth = Math.min((year + 1) * 12, schedule.length);
+          const yearData = schedule.slice(startMonth, endMonth);
+          
+          if (yearData.length === 0) continue;
+          
+          const totalPayment = yearData.reduce((sum, m) => sum + m.payment, 0);
+          const totalPrincipal = yearData.reduce((sum, m) => sum + m.principal, 0);
+          const totalInterest = yearData.reduce((sum, m) => sum + m.interest, 0);
+          const remaining = yearData[yearData.length - 1].remaining;
+          
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>第${year + 1}年</td>
+            <td>${FinanceCalc.formatNumber(totalPayment / 12)}</td>
+            <td>${FinanceCalc.formatNumber(totalPrincipal)}</td>
+            <td>${FinanceCalc.formatNumber(totalInterest)}</td>
+            <td>${FinanceCalc.formatNumber(remaining)}</td>
+          `;
+          tbody.appendChild(tr);
+        }
+      }
+      
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else {
+        init();
+      }
+    })();
+  </script>
+</body>
+</html>
